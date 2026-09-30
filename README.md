@@ -24,7 +24,8 @@
 
 ### 第一堂：基因體資料分析
 
-- [75 分鐘詳細教材](lessons/lesson-01-materials.md)：含中段 15 分鐘問答／操作、名詞解釋、Windows 安裝附錄，以及選用的 15 分鐘延伸單元。
+- [學員詳細教材](lessons/lesson-01-materials.md)：名詞解釋、判讀與延伸練習；附錄 A 完整涵蓋 Windows／WSL2、macOS、Linux 的安裝、下載專案、執行腳本、預期結果與排錯。
+- [第一堂 PDF 講義](output/pdf/lesson-01-materials.pdf)：包含完整跨系統實作附錄，可獨立閱讀。
 - [合成資料與操作腳本](demos/lesson-01-genomics/README.md)：PLINK QC、PCA、親緣與 ROH；SAM → BAM → VCF；BAF/LRR 與 VCF 判讀案例。
 - [HTML 投影片](output/slides/lesson-01-genomics.html)：54 張、16:9、可離線播放，含 SNP array 偵測示意圖、Array／NGS 常見檔案格式、BAF／LRR 指標解說、Panel／WES／WGS 比較與選擇、判讀練習及 Windows 安裝附錄；[操作說明](output/slides/README.md)。
 
@@ -35,7 +36,8 @@
 - [HTML 投影片](output/slides/lesson-02-somatic.html)：64 張（主課程 46＋選讀附錄與資源 18）、16:9、可離線播放。從檢測目的與效益，依序進入實務設計、採樣／製備、下機 QC（含第 18 頁 FastQC 判讀）、生物資訊流程與結果解讀；第 40–42 頁分別介紹 TMB、MSI、HRD。[操作與內容導覽](output/slides/lesson-02-README.md)。
 - [逐頁詳解閱讀版](output/slides/lesson-02-explanations.html)：64 頁對應的完整概念、例子與判讀說明；投影片亦可按 `E` 開啟目前頁詳解，並直接顯示具體算例或推理提示。
 
-- [學員教材](lessons/lesson-02-materials.md)：適用 75–90 分鐘課程，涵蓋 tumor–normal／tumor-only、somatic calling、FFPE 與讀段 QC、VAF／純度／CN、SV、IGV 與 cohort 摘要；正文不標示授課時長。
+- [學員教材](lessons/lesson-02-materials.md)：涵蓋 tumor–normal／tumor-only、somatic calling、FFPE 與讀段 QC、VAF／純度／CN、SV、IGV 與 cohort 摘要；附錄 A 提供三種系統的安裝、腳本執行、驗證及 IGV 載入步驟，不列段落授課時長。
+- [第二堂 PDF 講義](output/pdf/lesson-02-materials.pdf)：包含完整跨系統實作附錄，可獨立閱讀。
 - [合成資料與操作腳本](demos/lesson-02-somatic/README.md)：比較兩個同為 5% VAF 的不同證據模式，搭配 normal、CN 混合模型與讀段抽樣練習；工具安裝見教材附錄。
 
 ### 第三堂：Bulk RNA-seq 與可變剪接

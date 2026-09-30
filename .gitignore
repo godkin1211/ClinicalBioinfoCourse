@@ -23,3 +23,7 @@ node_modules/
 !.env.example
 *.pem
 *.key
+
+# Learner-generated lesson 01/02 practice runs (keep supplied practice01 fixtures).
+/demos/lesson-01-genomics/practice-local*/
+/demos/lesson-02-somatic/practice-local*/

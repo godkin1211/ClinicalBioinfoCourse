@@ -1,6 +1,6 @@
 # 癌症體細胞基因體分析：從定序證據到可信的候選事件
 
-`講師`: OO醫院精準醫學核心實驗室組長邱XX
+`講師`: 奇美醫院精準醫學核心實驗室組長邱家軍
 
 本教材適合臨床醫師、臨床工作者及初次接觸癌症定序分析的研究人員。你不必先會寫程式；可以先閱讀概念與案例，再使用附錄安裝的工具完成練習。
 
@@ -214,16 +214,16 @@ p=1.0   ################  1.585
 
 ### 6.1 準備練習資料
 
-本練習不需要第一堂的輸出。在 Ubuntu／WSL 執行以下 Bash 指令；若專案路徑不同，只修改第一行：
+本練習不需要第一堂的輸出。在 Windows 的 WSL Ubuntu、macOS Terminal 或 Linux Terminal 執行以下指令；先完成附錄 A 的安裝與工具檢查。若專案路徑不同，只修改第一行：
 
 ```bash
-cd ~/KCGMH_Cource_Series/demos/lesson-02-somatic
-python3 generate.py practice01
-cd practice01
+cd ~/ClinicalBioinfoCourse/demos/lesson-02-somatic
+python3 generate.py practice-local01
+cd practice-local01
 bash ../prepare.sh
 ```
 
-`practice01` 必須是新資料夾；產生器拒絕覆蓋既有資料。若重做，改成 `practice02`。`prepare.sh` 重跑會取代同名分析輸出，重要版本應分開保存。
+`practice-local01` 必須是新資料夾；產生器拒絕覆蓋既有資料。若重做，改成 `practice-local02`。`prepare.sh` 重跑會取代同名分析輸出，重要版本應分開保存。
 
 產生器建立 5,000 bp 的人工 contig `chrToy`、腫瘤／正常 SAM、候選 VCF，以及獨立設計的 CN 區段檔。所有 read 位置與候選標記都是人工指定，**不是 aligner 或 somatic caller 的輸出**。真實分子的獨立性、PCR、UMI、paired-end 與 FFPE 化學損傷沒有被模擬。
 
@@ -282,7 +282,7 @@ cat normal.evidence.tsv
 
 ### 6.4 使用 IGV 查看相同證據
 
-IGV（Integrative Genomics Viewer）能同時顯示 reference、coverage、reads 與候選事件。先依附錄安裝 Windows 桌面版，再開啟練習資料：
+IGV（Integrative Genomics Viewer）能同時顯示 reference、coverage、reads 與候選事件。先依附錄 A 安裝符合 Windows／macOS／Linux 的桌面版，再開啟練習資料：
 
 1. 選擇 `Genomes → Load Genome from File`，載入 `reference.fa`；`.fai` 保留在同一資料夾。不要選人類 hg38。
 2. 使用 `File → Load from File` 載入 `tumor.bam`、`normal.bam` 與 `candidates.vcf.gz`，索引留在各自檔案旁。
@@ -440,104 +440,406 @@ P(X ≥ 3) = 1 − [P(X=0) + P(X=1) + P(X=2)]
 | cfDNA／ctDNA | 游離 DNA／其中腫瘤來源的 DNA |
 | Orthogonal validation | 用具有不同限制或原理的方法補充驗證 |
 
-## 附錄 A：Windows 軟體安裝與課前檢查
+## 附錄 A：依作業系統安裝，到第一次成功執行
 
-### A1. 需要哪些工具？
+### A1. 選擇操作路線與必要工具
 
-| 工具 | 執行位置 | 用途 |
+依序完成「選作業系統 → 安裝工具 → 下載完整專案 → 產生自己的練習資料 → 執行腳本 → 核對結果」。只閱讀自己系統的安裝分支，再接共同步驟。所有資料均為合成教學資料，不要把病人資料放進這個公開專案。
+
+| 電腦 | 安裝路線 | 之後在哪裡輸入指令 |
 |---|---|---|
-| WSL2 Ubuntu | Windows 上的 Linux 環境 | 執行 Bash 與命令列工具 |
-| Python 3 | Ubuntu | 產生資料、核對讀段、計算模型；不需額外 pip 套件 |
-| SAMtools | Ubuntu | SAM/BAM 排序、索引與資料讀取 |
-| BCFtools | Ubuntu | VCF 格式檢查、壓縮索引與查詢 |
-| IGV Desktop | Windows | 查看 reference、BAM、VCF、CN 區段 |
+| Windows 11、Intel／AMD 64-bit | A2：WSL2 ＋ Ubuntu 24.04 | Ubuntu；只有安裝 WSL 使用 PowerShell |
+| macOS、Apple Silicon 或 Intel | A3：Homebrew ＋官方 PLINK 1.9 | Terminal（終端機） |
+| Linux、Ubuntu 24.04／相容 Debian 系統 | A4：系統套件管理員 | Linux Terminal |
+| Windows ARM／Linux ARM64、其他 Linux | 先看 A4 相容性限制 | 不可直接假設 x86_64 執行檔可用 |
 
-本課不需要 PLINK、R、Conda、Docker 或 GPU。GATK/Mutect2 僅作分析原理案例，不在本次操作中執行，因此不要求安裝。準備環境前確認院內權限；不得為安裝工具繞過資訊安全限制。
+Windows 可由「設定 → 系統 → 關於 → 系統類型」確認處理器；Mac 可由「蘋果選單 → 關於這台 Mac」確認晶片。Linux／WSL 的 `uname -m` 若顯示 `x86_64`，是 Intel／AMD 64-bit；`aarch64` 是 ARM64。Mac 原生 Apple Silicon 終端機通常顯示 `arm64`。
 
-### A2. 安裝 WSL2 Ubuntu
+| 工具 | 本次用途 | 哪堂需要 |
+|---|---|---|
+| Git | 下載完整教材，記錄教材版本 | 兩堂 |
+| Python 3.8 以上 | 產生合成資料、自動核對；只用標準函式庫 | 兩堂 |
+| Bash | 依序執行 `.sh` 腳本、連接工具 | 兩堂 |
+| SAMtools | SAM/BAM 轉換、排序、索引與讀段統計 | 兩堂 |
+| BCFtools | VCF 處理；第一堂另做小型 variant calling | 兩堂 |
+| PLINK **1.9** | Genotype QC、PCA、親緣與 ROH | 第一堂 |
+| IGV Desktop | 圖形化查看 reference、BAM、VCF、SEG | 第二堂的視覺核對 |
 
-已完成第一堂安裝者可略過。Windows 11，或符合 Microsoft 簡易安裝需求的 Windows 10，可在系統管理員 PowerShell 執行：
+不需 R、Docker、Conda、GPU、付費軟體或額外 Python 套件。FastQC、aligner、Mutect2 在概念部分介紹，但本次腳本沒有呼叫它們，不必額外安裝。第二堂不使用第一堂的輸出，可以單獨操作。
 
-```powershell
-wsl --install -d Ubuntu
-```
+請為 WSL／開發工具預留數 GB 磁碟空間並確認能連線至官方下載站與 GitHub；合成資料本身很小。安裝可能需要管理員權限，分析則不需要 `sudo`。院內電腦請先取得核准；不能安裝時請資訊人員提供合規環境，勿停用防護或繞過權限。
 
-依提示重新開機，開啟 Ubuntu 並設定 Linux 帳號與密碼。密碼輸入時不顯示字元是正常現象。在 PowerShell 檢查：
+### A2. Windows：WSL2 ＋ Ubuntu
 
-```powershell
+**步驟 1：安裝 Linux 環境。** WSL（Windows Subsystem for Linux）讓 Windows 使用 Linux 工具。本路線選 Windows 11 與 Ubuntu 24.04 LTS。Microsoft 簡易指令也支援 Windows 10 2004、build 19041 以上；作業系統維護狀態與院內政策另行確認。[Microsoft 安裝說明](https://learn.microsoft.com/en-us/windows/wsl/install)
+
+在開始選單搜尋 PowerShell，按右鍵「以系統管理員身分執行」，先查已安裝及可下載的發行版：
+
+~~~powershell
 wsl --list --verbose
-```
+wsl --list --online
+~~~
 
-Ubuntu 的 VERSION 應為 2；若為 1，先確認硬體、虛擬化與政策允許，再依實際發行版名稱設定：
+尚未安裝者，確認線上清單有 `Ubuntu-24.04` 後執行：
 
-```powershell
-wsl --set-version Ubuntu 2
-```
+~~~powershell
+wsl --install -d Ubuntu-24.04
+~~~
 
-簡易指令適用 Windows 10 version 2004、build 19041 以上或 Windows 11；作業系統維護狀態與院內規範另行確認。安裝與疑難排解依 [Microsoft 官方文件](https://learn.microsoft.com/en-us/windows/wsl/install)。
+依提示重新開機，從開始選單開啟 Ubuntu 24.04，建立 Linux 帳號與密碼；它們可以不同於 Windows 帳號。輸入密碼不顯示字元是正常現象。已有可用 Ubuntu 不必重裝，尤其不要使用 `wsl --unregister`，這會刪除該環境與資料。
 
-### A3. 安裝命令列工具
+**步驟 2：確認 WSL2。** 在 PowerShell 再執行 `wsl --list --verbose`，Ubuntu 的 `VERSION` 應為 `2`。若為 `1`，請先確認硬體虛擬化與政策允許，再執行：
 
-以下在 **Ubuntu**，不是 PowerShell 執行：
+~~~powershell
+wsl --set-version Ubuntu-24.04 2
+~~~
 
-```bash
+發行版名稱必須與清單一致；若清單顯示 `Ubuntu`，就改用 `Ubuntu`。
+
+**步驟 3：改在 Ubuntu 視窗安裝工具。** PowerShell 常見提示為 `PS C:\...>`；Ubuntu 通常為 `使用者@電腦:~$`。下面指令不是貼在 PowerShell、CMD、Git Bash 或 Python 的 `>>>`。
+
+~~~bash
+uname -m
 sudo apt update
-sudo apt install -y python3 samtools bcftools
+sudo apt install -y git python3 samtools bcftools
+~~~
+
+`apt update` 更新套件清單，`apt install` 安裝工具；`sudo` 要求剛設定的 Linux 密碼。第一堂另外安裝：
+
+~~~bash
+sudo apt install -y plink1.9
+plink1.9 --version
+~~~
+
+PLINK 指令以 Ubuntu 24.04 的 x86_64 為主要路線；ARM 電腦或找不到套件請看 A4。不要改裝 PLINK 2 當成同一工具。完成後跳到 A5，不需再裝 Windows 版 Python／SAMtools。
+
+### A3. macOS：Homebrew ＋ PLINK 1.9
+
+**步驟 1：打開 Terminal。** 按 Command＋空白鍵，搜尋 Terminal，再查看系統：
+
+~~~bash
+sw_vers
+uname -m
+~~~
+
+先核對 [Homebrew 支援範圍](https://docs.brew.sh/Installation)。舊 macOS／Intel Mac 的支援程度不同，安裝若提示不支援，應請資訊人員安排相容工具或核准的 Linux 環境，勿強行覆寫系統。
+
+**步驟 2：安裝 Homebrew。** 它是管理命令列軟體的工具。先執行 `brew --version`；已有版本就跳過重裝。否則前往 [Homebrew 官網](https://brew.sh/)，確認來源與權限後，在 Terminal 執行官方安裝指令：
+
+~~~bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+~~~
+
+這行會下載並執行安裝程式，請閱讀提示再同意。若要求 Command Line Tools，依提示完成，或執行 `xcode-select --install` 並於系統視窗安裝；不用下載完整 Xcode。
+
+安裝結束，**照畫面 Next steps 設定 shellenv**，讓終端機找到 `brew`。若目前視窗仍找不到，Apple Silicon 的標準安裝位置可執行：
+
+~~~bash
+eval "$(/opt/homebrew/bin/brew shellenv)"
+~~~
+
+Intel Mac 的標準位置則用：
+
+~~~bash
+eval "$(/usr/local/bin/brew shellenv)"
+~~~
+
+只選符合安裝位置的一段。`eval` 在此載入 Homebrew 的環境設定；這一行僅影響目前視窗，仍應依 Next steps 完成啟動設定。再用 `brew --version` 確認。
+
+**步驟 3：安裝兩堂共用工具。**
+
+~~~bash
+brew install git python samtools bcftools
+~~~
+
+`python` 是套件名稱，執行時仍叫 `python3`。不要在 `brew install` 前加 `sudo`。套件名稱見 [SAMtools formula](https://formulae.brew.sh/formula/samtools)與 [BCFtools formula](https://formulae.brew.sh/formula/bcftools)。
+
+**步驟 4：第一堂另裝 PLINK。** 第二堂可以跳過。於 [PLINK 1.9 官方頁](https://www.cog-genomics.org/plink/1.9/)選 macOS 64-bit stable，不要選 PLINK 2。以下固定使用 2026-09-27 版本；本次實際檢查它是包含 x86_64 與 arm64 的 Universal binary，Intel 與 Apple Silicon 可用同一檔案。
+
+~~~bash
+mkdir -p "$HOME/bioinfo-tools/plink19-20260927"
+cd "$HOME/bioinfo-tools/plink19-20260927"
+curl -fL \
+  https://s3.amazonaws.com/plink1-assets/plink_mac_20260927.zip \
+  -o plink.zip
+unzip -n plink.zip
+file plink
+./plink --version
+~~~
+
+`mkdir -p` 建立工具目錄；`curl -fL` 下載並在 HTTP 錯誤時失敗；`unzip -n` 解壓但不覆蓋既有檔案；`file` 顯示程式架構。每一步無錯誤才繼續。版本應顯示 PLINK v1.9.0。本例不用一律加裝 Rosetta；如果另用 Intel-only 舊版，才需核對 [Apple Rosetta 說明](https://support.apple.com/en-us/102527)。
+
+為了與 Ubuntu 一樣使用 `plink1.9` 命令，把已確認來源的程式放到個人工具目錄。若目的地已有其他版本，先備份或改名，不要直接取代。
+
+~~~bash
+mkdir -p "$HOME/.local/bin"
+install -m 755 ./plink "$HOME/.local/bin/plink1.9"
+export PATH="$HOME/.local/bin:$PATH"
+plink1.9 --version
+~~~
+
+`install -m 755` 複製並賦予執行權限；`PATH` 是終端機搜尋程式的目錄清單。`export` 只在目前視窗與子程式有效，**每次新開 Terminal 執行第一堂前，再執行 `export PATH="$HOME/.local/bin:$PATH"`**。熟悉 shell 者可自行寫入個人啟動檔。不要只設定 alias，因為子腳本未必能使用。
+
+若 macOS 阻擋下載程式，確認官方來源後依「隱私權與安全性」提示或洽資訊人員處理，不要全域停用 Gatekeeper。完成後前往 A5。
+
+### A4. Linux：套件安裝與相容性
+
+Linux 不需安裝 WSL 或 Homebrew。打開 Terminal，確認發行版與 CPU：
+
+~~~bash
+cat /etc/os-release
+uname -m
+~~~
+
+以下以 **Ubuntu 24.04 LTS、x86_64** 為基準。Debian 可使用相同套件管理命令，但套件版本與架構須另確認。Fedora、Rocky、Arch 不是 apt 系統，請由資訊人員用該系統的套件管理方式提供 A1 工具，再從 A5 檢查，不要直接照貼 apt。
+
+~~~bash
+sudo apt update
+sudo apt install -y git python3 samtools bcftools
+~~~
+
+第一堂另外執行：
+
+~~~bash
+sudo apt install -y plink1.9
+plink1.9 --version
+~~~
+
+若 `Unable to locate package plink1.9`，先查拼字、`apt update` 是否成功及發行版。Ubuntu 的套件位於 **universe**；只有院內允許新增來源時才執行：
+
+~~~bash
+sudo apt install -y software-properties-common
+sudo add-apt-repository universe
+sudo apt update
+sudo apt install -y plink1.9
+~~~
+
+這段新增來源只適用 Ubuntu，不適用 Debian。伺服器沒有 sudo 者，請管理員安裝或啟用既有環境，不要修改系統權限。
+
+**ARM64 限制：** [Ubuntu 24.04 的 plink1.9 套件頁](https://packages.ubuntu.com/en/noble/plink1.9)目前沒有 ARM64 套件。Windows ARM 的 WSL、ARM Linux 不應下載 x86_64 程式硬跑。若 Python、SAMtools、BCFtools 可用，仍可完成第一堂定序部分及第二堂命令列練習；array 部分請資訊人員提供經確認的 PLINK 1.9 ARM 編譯版，或改用核准的 x86_64 Ubuntu 電腦／伺服器。本教材不宣稱已驗證 ARM Linux 的 array 流程。使用遠端主機時，安裝與腳本都在遠端執行，供 IGV 使用的結果需另下載到桌面電腦。
+
+### A5. 共同步驟：確認工具與下載專案
+
+Windows 在 Ubuntu，macOS／Linux 在 Terminal 執行。後文 `.sh` 都用 `bash` 呼叫，因此 Mac 預設是 zsh 也能操作。
+
+~~~bash
+git --version
 python3 --version
+bash --version
 samtools --version
 bcftools --version
-```
+~~~
 
-不需要 `pip install`。Ubuntu 套件版本可能不同於本教材測試環境，請保留版本資訊；需要指定版本時應由研究流程統一管理，而非自行混用多個安裝來源。
+每行應印出版本，不是 `command not found`；SAMtools／BCFtools 顯示多行編譯資訊正常。Python 至少 3.8，因第二堂使用 `math.comb`。第一堂加跑 `plink1.9 --version`，確認是 PLINK 1.9／1.90 系列，不是 2.x 或 PuTTY 的同名連線工具。
 
-### A4. 放置完整教材並測試
+**第一次下載：** 假設家目錄尚無 `ClinicalBioinfoCourse` 資料夾：
 
-先在 Windows 解壓完整專案。假設位置是 `C:\Users\你的帳號\Downloads\KCGMH_Cource_Series`，且 Ubuntu 尚未有該資料夾，可在 Ubuntu 執行：
+~~~bash
+cd ~
+git clone https://github.com/godkin1211/ClinicalBioinfoCourse.git
+cd ClinicalBioinfoCourse
+pwd
+ls
+git rev-parse --short HEAD
+~~~
 
-```bash
-cp -r "/mnt/c/Users/你的帳號/Downloads/KCGMH_Cource_Series" ~/KCGMH_Cource_Series
-cd ~/KCGMH_Cource_Series/demos/lesson-02-somatic
-python3 generate.py preclass01
-cd preclass01
-bash ../prepare.sh
-python3 ../verify.py .
-python3 ../models.py
-```
+公開專案不需 GitHub 帳號或 token。`cd ~` 回到目前使用者的家目錄；WSL 的家目錄是 `/home/帳號`，不是 `C:\Users\帳號`。`git clone` 下載整個專案，`pwd` 顯示位置，`ls` 列出內容。應看到 `lessons`、`demos`、`scripts`、`README.md`。最後一行是教材版本識別碼，請保留。
 
-請將「你的帳號」換成實際值。若第一堂已複製專案，不要再次執行整個 `cp -r` 而產生巢狀資料夾；先確認第二堂的 `demos/lesson-02-somatic` 已更新進去。`preclass01` 已存在時換一個新名稱。
+**已下載過：** 不要再次 clone。先進入既有專案查看狀態：
 
-`verify.py` 應顯示 PASS；它核對合成輸出的預期值，不驗證 somatic caller 效能。保存版本：
+~~~bash
+cd ~/ClinicalBioinfoCourse
+git status --short
+~~~
 
-```bash
+若顯示自己的修改，先保留並詢問協助；不要執行 `reset --hard`。確認沒有要保留的未完成修改，再更新：
+
+~~~bash
+git pull --ff-only
+~~~
+
+`--ff-only` 只允許快轉更新；若失敗請停下，勿強制覆蓋。舊專案若叫 `KCGMH_Cource_Series` 也可繼續使用，只要把後面每個 `~/ClinicalBioinfoCourse` 換成實際位置，不必搬動或刪除舊資料。
+
+只能用瀏覽器時，在 GitHub 選 `Code → Download ZIP`，解壓完整內容，放到家目錄並命名 `ClinicalBioinfoCourse`。ZIP 沒有 Git 紀錄，不能執行 `git pull`、`git rev-parse`，請改記下載日期。Windows 可於 Ubuntu 執行 `explorer.exe ~` 開啟 Linux 家目錄，再以檔案總管複製解壓資料夾。無網路時請講師經核准管道提供完整副本與版本資訊。
+
+### A6. 看懂指令與路徑，再開始分析
+
+Script（腳本）是依序執行的指令檔：`.py` 用 `python3`；`.sh` 用 `bash`。不要雙擊，也不要貼進 Python 的 `>>>`。本教材直接呼叫 Bash，不需先對腳本做 `chmod +x`。
+
+| 寫法 | 意思與用途 |
+|---|---|
+| `cd 目錄` | 切換目前目錄，失敗就先停止，不執行下一行 |
+| `.`／`..` | 目前目錄／上一層；在練習目錄內，`../prepare.sh` 才會指到上一層腳本 |
+| `ls`／`head -n 5 檔案` | 列出檔案／讀前五行，核對位置與欄名 |
+| `# 說明` | 註解；不要連終端機提示符號一起複製 |
+| `>`／`>>` | 把輸出寫到檔案並覆蓋／附加到檔案末尾 |
+| `2>&1` | 把錯誤訊息與一般輸出保存在同一份 log |
+| 行尾 `\` | 指令接續下一行，後面不可留空白 |
+
+路徑有空白時加雙引號，例如 `cd "/Users/你的帳號/My Courses/ClinicalBioinfoCourse"`。看到 `Error`、`Traceback`、`command not found` 先停止；不能只因為後面有檔案就認為成功。
+
+以下使用新的 `practice-local01`。專案若已有 `practice01`，那是既有示範，不要重用。產生器拒絕覆蓋任何已存在目錄；重做請換 `practice-local02`，並同步修改下一行的 `cd`。個人 `practice-local*` 目錄已加入 Git 忽略規則。分析腳本會取代同名輸出，兩次比較應各用一個新目錄。
+
+### A7. 第二堂：準備 BAM、檢查證據、驗證結果
+
+**步驟 1：進入本堂腳本目錄。** 不需要第一堂的輸出或 PLINK：
+
+~~~bash
+cd ~/ClinicalBioinfoCourse/demos/lesson-02-somatic
+pwd
+ls generate.py prepare.sh audit_reads.py verify.py models.py
+~~~
+
+五個檔案都列出才繼續。`generate.py` 造出合成資料；`prepare.sh` 轉檔與索引；`audit_reads.py` 從讀段重算證據；`verify.py` 檢查答案；`models.py` 列出 VAF、純度、CN 與抽樣的簡化模型。
+
+**步驟 2：產生新練習資料。**
+
+~~~bash
+python3 generate.py practice-local01
+cd practice-local01
+pwd
+ls
+~~~
+
+成功時會印出 `Created ...` 與 A/B、D 的預期比例。應出現 `reference.fa`、`tumor.sam`、`normal.sam`、`candidates.vcf`、`copy_number.seg`。第一堂與第二堂各自目錄下同名的 `practice-local01` 是不同資料夾，內容不可互換。
+
+這些 SAM 的位置、VCF 的候選與 FILTER 都是人工設定。`prepare.sh` 不執行 aligner、Mutect2 或 CN caller；SEG 來自獨立的模型，不能當成 BAM 深度推估結果。
+
+**步驟 3：執行資料整理。**
+
+~~~bash
+bash ../prepare.sh > prepare.run.log 2>&1
+echo $?
+tail -n 12 prepare.run.log
+ls *.bam *.bai *.tbi *.tsv
+~~~
+
+`bash` 執行上一層的腳本，`> prepare.run.log 2>&1` 保留一般與錯誤輸出。等待提示符號回來後，緊接的 `echo $?` 應為 0；非 0 先停下查 log。成功時 log 可能很短，不能用文字多寡判斷成敗。
+
+腳本為 reference 建 `.fai`，把兩份 SAM 轉成排序 BAM、建立 `.bai`、執行 quickcheck 與 flagstat；再壓縮 VCF、建立 `.tbi`、查詢欄位，最後把 BAM 讀段交給 `audit_reads.py` 重新統計證據。
+
+**步驟 4：確認檔案可讀及樣本正確。**
+
+~~~bash
+samtools quickcheck -v tumor.bam normal.bam
+echo $?
+bcftools query -l candidates.vcf.gz
+cat tumor.evidence.tsv
+cat normal.evidence.tsv
+cat candidates.tsv
+~~~
+
+quickcheck 正常時通常**沒有輸出**且退出碼 0；它檢查基本結構，不代表每條 read 都可信。VCF 樣本名稱依序應是 `TUMOR`、`NORMAL`，不要因欄位位置就自行猜測。
+
+| 位點 | 腫瘤 ALT／深度 | 正向／反向 ALT | 端部 ALT | 正常 ALT／深度 |
+|---|---:|---:|---:|---:|
+| chrToy:500 | 20／400 | 10／10 | 0 | 0／200 |
+| chrToy:1500 | 20／400 | 20／0 | 20 | 0／200 |
+| chrToy:2500 | 200／400 | 100／100 | 0 | 100／200 |
+
+前三列都應出現在證據表。500 與 1500 都是 VAF 5%，但後者的 ALT 完全單向且接近讀段末端。這是教材設計的可疑模式，不應只憑方向偏差就宣告真偽。正常樣本在 2500 的支持則提醒你注意 germline／normal evidence，而非把腫瘤裡所有變異都當 somatic。
+
+**步驟 5：執行自動核對。**
+
+~~~bash
+python3 ../verify.py . > verification.txt 2>&1
+echo $?
+cat verification.txt
+~~~
+
+應為退出碼 0，並顯示以下完整訊息（畫面自動換行正常）：
+
+~~~text
+PASS: BAM-derived counts, bias patterns, VCF samples/flags, CN/VAF models, indexed artifacts
+~~~
+
+`.` 指目前目錄。程式確認 BAM 衍生計數、方向／端部模式、VCF 樣本與標記、模型及索引檔；**不是**驗證 somatic caller 的敏感度或臨床效能。
+
+**步驟 6：執行模型與保存紀錄。**
+
+~~~bash
+python3 ../models.py > models.txt
+echo $?
+cat models.txt
 python3 --version > versions.txt
 samtools --version >> versions.txt
 bcftools --version >> versions.txt
-```
+uname -a >> versions.txt
+git rev-parse HEAD > course-commit.txt
+~~~
 
-### A5. 安裝 Windows IGV Desktop
+`models.py` 只用 Python 標準函式庫，不需 pip。`low_purity` 的預期 VAF 為 0.050000，`gain_one_mutant_copy` 為 0.071429，`CN6 purity=0.2` 的 log2ratio 約 0.485427；這些是條件指定後的計算，不是從病人資料反推的估計。ZIP 使用者跳過 Git 一行，另記下載日期。保留輸入、版本、`prepare.run.log`、`verification.txt`、`models.txt` 及所有結果。
 
-1. 開啟 [IGV 官方下載頁](https://igv.org/doc/desktop/DownloadPage/index.html)，選擇與 Windows／CPU 架構相符的桌面版本。
-2. 優先使用包含 Java runtime 的 Windows 安裝包，依安裝程式提示完成。若改用不含 Java 的套件，依當版官方要求安裝相符 Java；目前文件標示自 IGV 2.19.1 起需 Java 21 或以上。
-3. 啟動 IGV，確認可開啟本機檔案。記下 Help／About 中的版本供紀錄。
-4. 按正文第 6.4 節載入本例 reference 與資料，不需要下載人類全基因體。
+### A8. 三種系統的 IGV 安裝與啟動
 
-如果 Windows IGV 不便直接讀 WSL 路徑，可先在目前的練習資料夾執行 `explorer.exe .`，透過檔案總管複製所需檔案至新的 Windows 資料夾。需一起複製 `reference.fa/.fai`、兩份 `.bam/.bam.bai`、`candidates.vcf.gz/.tbi` 與 `copy_number.seg`；不要只複製 BAM 而遺漏索引。
+IGV 是桌面圖形程式，不是另一個 caller。命令列 PASS 與 IGV 載入成功是兩個不同檢查；GUI 暫不可用時可先完成證據表判讀。
 
-你也可以在 Windows 檔案總管使用 `\\wsl.localhost\Ubuntu\home\你的Linux帳號\...` 找到資料；發行版與帳號依實際環境調整。只使用本課合成檔案；不得將院內病人檔案上傳至未核准網站。
+到 [IGV 官方下載頁](https://igv.org/doc/desktop/DownloadPage/)選與作業系統、CPU 相符的穩定版，優先使用 **包含 Java runtime** 的套件。不要為本課改裝 beta；若下載不含 Java 的版本，按當版需求另備 Java。核對時官方說明為 IGV 2.19.1 起需 Java 21 以上；下載頁改版時以當版文件為準。
 
-### A6. 常見問題
+**Windows：** 在 Windows 瀏覽器下載 Windows 安裝包，依精靈選目的地並完成，從開始選單開啟 IGV。不是在 Ubuntu 執行 `.exe`。若電腦是 Windows ARM，先確認當版 Windows 套件與 Java 支援該架構，不把 x64 支援視為 ARM 原生支援。院內禁止安裝時請資訊人員部署。
 
-| 現象 | 檢查方式 |
+**macOS：** 在下載頁選符合 Apple Silicon／Intel 的 Mac app，開啟下載的封裝；若為 ZIP 先解壓，把 IGV.app 拖到 Applications，再從 Applications 啟動。若出現安全提示，確認來源後依系統允許的操作或洽資訊人員處理，不要全域關閉安全機制。
+
+**Linux 桌面：** x86_64 使用官方 Linux 套件（包含 Java），於檔案管理員解壓，開啟解壓目錄中的終端機，確認 `igv.sh` 存在，再執行：
+
+~~~bash
+pwd
+ls igv.sh
+bash igv.sh
+~~~
+
+需有可用的桌面顯示環境。官方 Linux 包附的是 x64 Java；ARM64 不可直接使用，應選「Command line IGV for all platforms」並由資訊人員安裝相容架構的 Java 21 以上，確認 `java -version` 後再啟動。這個名稱仍是啟動桌面 GUI 的方式，不代表能在沒有顯示環境的 SSH 視窗直接顯示。遠端／無桌面的伺服器可完成命令列分析，再把本課合成結果下載到本機桌面 IGV。
+
+啟動後於 About 對話框（依系統在 Help 或應用程式選單）記下版本。下一步不需下載 hg38；使用本課 `chrToy`。
+
+### A9. 把結果交給 IGV，完成視覺核對
+
+**步驟 1：找到結果資料夾。** 在目前練習目錄執行 `pwd`。Mac 可用 `open .` 在 Finder 開啟；Linux 桌面可用檔案管理員前往該路徑；Windows 在 Ubuntu 用：
+
+~~~bash
+explorer.exe .
+~~~
+
+它會用 Windows 檔案總管開啟 WSL 的目前資料夾。若 IGV 無法直接讀 WSL 路徑，透過檔案總管把下面整組合成檔案複製到一個新的 Windows 資料夾，例如 `Documents\ClinicalBioinfoLesson02`，不要只複製 BAM。不要在分析尚未結束時複製。
+
+| 一起保留的檔案 | 理由 |
 |---|---|
-| `command not found` | 確認在 Ubuntu，且已完成 apt 安裝 |
-| `FileExistsError` | 產生器保護既有資料；改用新練習資料夾 |
-| 找不到 `../audit_reads.py` | 確認在 `lesson-02-somatic` 下產生的練習資料夾 |
-| IGV 空白或沒有 chrToy | 載入本課 reference，不是人類 reference；縮放到指定座標 |
-| IGV 看見的 read 數比 DP 少 | 可能 downsampling；回查完整 BAM 計數與顯示設定 |
-| IGV 找不到索引 | BAM/BAI、VCF.gz/TBI 需一起複製並保持相符名稱 |
-| Python 說只支援 150M | 你可能用了其他資料；本腳本不是通用 pileup 工具 |
-| 腫瘤與正常顛倒 | 先查 read group 的 SM 與 VCF 的樣本名稱 |
-| 沒有管理員權限 | 洽資訊部門或使用核准環境；可先做表格判讀 |
+| `reference.fa`、`reference.fa.fai` | 人工 reference 與位置索引 |
+| `tumor.bam`、`tumor.bam.bai` | 腫瘤讀段與索引 |
+| `normal.bam`、`normal.bam.bai` | 正常讀段與索引 |
+| `candidates.vcf.gz`、`candidates.vcf.gz.tbi` | 壓縮候選檔與 tabix 索引 |
+| `copy_number.seg` | 人工設計的 CN 區段示意 |
+
+這裡總共 **9 個檔案**。保持檔名相配；不要單獨改名 `tumor.bam` 卻不改 `tumor.bam.bai`。`.vcf.gz` 不需自行解壓。
+
+**步驟 2：載入正確 reference。** 在 IGV 選 `Genomes → Load Genome from File`，選 `reference.fa`。同目錄保留 `.fai`；成功時應能選到 `chrToy`，不是 chr1 或 hg38。如果 GUI 選單文字略不同，以當版 reference 載入功能為準。
+
+**步驟 3：載入結果。** 選 `File → Load from File`，載入 `tumor.bam`、`normal.bam`、`candidates.vcf.gz`、`copy_number.seg`。索引不需當成獨立軌道載入，但必須在旁邊。應出現兩個 alignment／coverage 軌道、候選軌道與 CN 區段。
+
+**步驟 4：逐位點查看。** 搜尋 `chrToy:450-550` 並按 Enter。放大到可見鹼基，點選／移到 coverage 及 read 以查看實際數值；在 alignment 軌道右鍵選 `Color alignments by → Read strand`（名稱依版本可能略異）。不要把不同顯示配色直接當作固定生物學意義。
+
+接著查 `chrToy:1450-1550`，比較 ALT 方向與讀段末端位置；查 `chrToy:2450-2550`，看 normal 也支持 ALT。最後查 `chrToy:1-5000`，應見 3000–4000 的 SEG 約 0.485427；該模型與本例 BAM depth 獨立，不要把它說成同一份資料算出的 CN 結果。
+
+**步驟 5：定義完成。** 你應能指出：500 與 1500 同為 5% VAF 但支持模式不同；2500 有 normal evidence；CN 軌道是獨立示意。若畫面 read 數比表格少，先檢查 downsampling（抽樣顯示）設定，回查完整 BAM 統計；螢幕可見數量不是深度的唯一依據。保存座標與判讀筆記，截圖只能補充，不能取代 BAM／VCF 與執行紀錄。
+
+### A10. 第二堂常見問題
+
+| 現象 | 檢查與處理 |
+|---|---|
+| `command not found` | 先查是否在正確終端機，再以 `command -v python3`、`command -v samtools`、`command -v bcftools` 找路徑 |
+| `FileExistsError` | 改 `practice-local02`，並同步更改 `cd`；不要覆蓋既有練習 |
+| 找不到 `reference.fa`／`../prepare.sh` | 用 `pwd`、`ls` 確認正在第二堂的練習子目錄 |
+| `$'\r': command not found` | 腳本換行格式錯誤；用文字編輯器存為 UTF-8／LF，或重新取得教材 |
+| 沒有 BAM 或索引 | 先查 `prepare.run.log` 的第一個錯誤，不直接跳到 IGV |
+| `math.comb` 不存在 | 檢查 Python 是否至少 3.8、`python3` 是否指到舊環境 |
+| 程式說只支援 150M | 可能用了其他資料；本例不是通用 pileup 工具 |
+| IGV 空白／找不到 chrToy | 先載入本課 reference，再放大到指定座標，不用 hg19/hg38 |
+| 找不到 index | 核對完整 9 檔、同目錄與檔名；索引要配對本次 BAM／VCF |
+| IGV 不能啟動／Java 錯誤 | 確認套件的 OS、CPU、Java 版本；Linux 確認桌面環境；優先用官方附 Java 套件 |
+| 顯示 read 數不足 | 檢查 downsampling 與縮放，用 `*.evidence.tsv` 比較完整計數 |
+| 沒有 sudo／管理員權限 | 使用資訊人員核准環境；可以先做輸出表判讀，不繞過政策 |
+
+求助請提供系統／CPU、版本、`pwd`、完整命令、第一個錯誤及合成資料的 log；不要提供病人資料、token 或密碼。每次重跑若改參數，另建新的練習目錄保存差異。
 
 ## 附錄 B：實作邊界與延伸閱讀
 
@@ -549,4 +851,4 @@ bcftools --version >> versions.txt
 - [IGV alignment 文件](https://igv.org/doc/desktop/UserGuide/tracks/alignments/viewing_alignments_basics/)：讀段與 coverage 的顯示限制。
 - [IGV paired-end 文件](https://igv.org/doc/desktop/UserGuide/tracks/alignments/paired_end_alignments/)：配對方向與結構變異證據。
 
-文件核對日期：2026-09-13。實際測試環境、驗證內容與未測試項目見[第二堂示範說明](../demos/lesson-02-somatic/README.md)。
+安裝文件核對日期：2026-09-30。實際測試環境、驗證內容與未測試項目見[第二堂示範說明](../demos/lesson-02-somatic/README.md)。

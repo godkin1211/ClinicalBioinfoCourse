@@ -7,10 +7,16 @@ root = Path(__file__).resolve().parents[1]
 for lesson in ('01', '02'):
     reader = PdfReader(root / f'output/pdf/lesson-{lesson}-materials.pdf')
     text = ''.join(''.join(page.extract_text().split()) for page in reader.pages)
-    for phrase in ['Windows', '邱XX', '附錄', 'python3']:
+    for phrase in ['Windows', 'macOS', 'Linux', '邱家軍', '附錄',
+                   'practice-local01', 'verification.txt', 'python3']:
         assert phrase in text, (lesson, phrase)
     assert '\ufffd' not in text
-    images = sorted((root / 'tmp/pdfs').glob(f'lesson{lesson}-*.png'))
+    assert '邱XX' not in text
+    # Only use the current PDF's pages, never stale PNGs from an older build.
+    digits = len(str(len(reader.pages)))
+    images = [root / 'tmp/pdfs' / f'lesson{lesson}-{i:0{digits}d}.png'
+              for i in range(1, len(reader.pages) + 1)]
+    assert all(path.is_file() for path in images), 'Render current PDFs with pdftoppm first'
     for start in range(0, len(images), 6):
         sheet = Image.new('RGB', (1800, 1760), '#dce2e6')
         draw = ImageDraw.Draw(sheet)

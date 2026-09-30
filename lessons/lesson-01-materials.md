@@ -1,6 +1,6 @@
 # 從 SNP Array 到 WES/WGS：基因體資料分析入門
 
-`講師`: OO醫院精準醫學核心實驗室組長邱XX
+`講師`: 奇美醫院精準醫學核心實驗室組長邱家軍
 
 本教材適合臨床醫師、臨床工作者及初次接觸基因體資料分析的研究人員。你不需要預先具備程式設計經驗；閱讀時可先理解資料與分析結果，再依指令完成練習。
 
@@ -141,14 +141,14 @@ Reported-sex check 比較登錄欄位與性染色體訊號的相容性；須考�
 
 ### 4.1 操作練習：從 genotype 找出 QC 問題
 
-這個練習要回答兩件事：「哪些資料需要先檢查？」以及「你的判斷依據在哪裡？」請依序開啟資料、產生 QC 報表並找出異常，在筆記中記錄一個暫停下游分析的理由。安裝方法見文末附錄。以下皆為 **Ubuntu／WSL 的 Bash 指令，不是 PowerShell**。
+這個練習要回答兩件事：「哪些資料需要先檢查？」以及「你的判斷依據在哪裡？」請依序開啟資料、產生 QC 報表並找出異常，在筆記中記錄一個暫停下游分析的理由。安裝方法見文末附錄。以下在 **Windows 的 WSL Ubuntu、macOS Terminal 或 Linux Terminal** 操作，`.sh` 用 Bash 執行，不是在 PowerShell 輸入。先依附錄 A 安裝並檢查工具。
 
-將專案放在 Ubuntu 的 `~/KCGMH_Cource_Series`。若路徑不同，只修改第一行。`cd` 切換資料夾；`head` 顯示前幾行；`--out` 指定輸出前綴。
+將完整專案放在目前使用者的 `~/ClinicalBioinfoCourse`。若路徑不同，只修改第一行。`cd` 切換資料夾；`head` 顯示前幾行；`--out` 指定輸出前綴。
 
 ```bash
-cd ~/KCGMH_Cource_Series/demos/lesson-01-genomics
-python3 generate.py practice01
-cd practice01
+cd ~/ClinicalBioinfoCourse/demos/lesson-01-genomics
+python3 generate.py practice-local01
+cd practice-local01
 PLINK=plink1.9 bash ../run-array.sh
 head -n 5 raw.fam
 head -n 5 raw.bim
@@ -156,7 +156,7 @@ head -n 5 qc.imiss
 head -n 5 qc.lmiss
 ```
 
-`practice01` 必須是新資料夾；產生器拒絕覆蓋既有資料。重做時使用 `practice02`。在既有練習目錄重跑分析腳本會取代同名結果，故重要比較應先保留整個練習目錄。
+`practice-local01` 必須是新資料夾；產生器拒絕覆蓋既有資料。重做時使用 `practice-local02`。在既有練習目錄重跑分析腳本會取代同名結果，故重要比較應先保留整個練習目錄。
 
 資料共有 40 人、6,000 個常染色體 SNP，採固定亂數種子，包含刻意加入的缺失、重複樣本及連續純合區。這些不是疾病樣本或真實人類族群模擬；分析結果僅供理解方法。你可以先檢查輸出，再對照後面的結果解析。
 
@@ -242,7 +242,7 @@ Depth（深度）是位置被多少 reads 覆蓋；breadth（覆蓋廣度）是�
 
 為了讓一般筆電短時間執行，教材提供 chrToy 2,000 bp、40 條理想讀段；SAM 已由產生器指定正確位置，**這不是實際 aligner 的輸出，也沒有測試真實比對效能**。FASTQ 用來觀察格式；本段從已比對的 SAM 起跑，不在課中重跑完整人類 WES/WGS 流程。
 
-在第四節建立的 `practice01` 中執行：
+在第四節建立的 `practice-local01` 中執行：
 
 ```bash
 head -n 8 reads.fastq
@@ -423,98 +423,357 @@ head -n 6 structure2.eigenvec
 | Confounding | 兩個因素糾纏，無法把觀察到的差異簡單歸因其中之一 |
 | Provenance | 保留資料如何取得、轉換、分析與人工修改的可追溯紀錄 |
 
-## 附錄 A：Windows 課前安裝
+## 附錄 A：依作業系統安裝，到第一次成功執行
 
-### A1. 路線與權限
+### A1. 選擇操作路線與必要工具
 
-建議使用 Windows 11 與 WSL2 Ubuntu，統一執行 Linux 版 PLINK 1.9、SAMtools、BCFtools 與 Python 3。無須 R、Conda、Docker、付費晶片軟體或 GPU。玩具資料很小，但 WSL 與 Ubuntu 本身需要額外磁碟空間；課前預留數 GB 以上並確認院內政策。
+依序完成「選作業系統 → 安裝工具 → 下載完整專案 → 產生自己的練習資料 → 執行腳本 → 核對結果」。只閱讀自己系統的安裝分支，再接共同步驟。所有資料均為合成教學資料，不要把病人資料放進這個公開專案。
 
-WSL 的簡易安裝指令也支援 Windows 10 2004、build 19041 以上，但仍須確認作業系統支援與院內資訊安全規範。安裝需要系統管理員權限、適當虛擬化設定及網路；受管制電腦請先找資訊部門，不要繞過限制。[Microsoft WSL 安裝說明](https://learn.microsoft.com/en-us/windows/wsl/install)
+| 電腦 | 安裝路線 | 之後在哪裡輸入指令 |
+|---|---|---|
+| Windows 11、Intel／AMD 64-bit | A2：WSL2 ＋ Ubuntu 24.04 | Ubuntu；只有安裝 WSL 使用 PowerShell |
+| macOS、Apple Silicon 或 Intel | A3：Homebrew ＋官方 PLINK 1.9 | Terminal（終端機） |
+| Linux、Ubuntu 24.04／相容 Debian 系統 | A4：系統套件管理員 | Linux Terminal |
+| Windows ARM／Linux ARM64、其他 Linux | 先看 A4 相容性限制 | 不可直接假設 x86_64 執行檔可用 |
 
-### A2. 在 PowerShell 安裝 WSL
+Windows 可由「設定 → 系統 → 關於 → 系統類型」確認處理器；Mac 可由「蘋果選單 → 關於這台 Mac」確認晶片。Linux／WSL 的 `uname -m` 若顯示 `x86_64`，是 Intel／AMD 64-bit；`aarch64` 是 ARM64。Mac 原生 Apple Silicon 終端機通常顯示 `arm64`。
 
-在 Windows 搜尋 PowerShell，按右鍵「以系統管理員身分執行」：
+| 工具 | 本次用途 | 哪堂需要 |
+|---|---|---|
+| Git | 下載完整教材，記錄教材版本 | 兩堂 |
+| Python 3.8 以上 | 產生合成資料、自動核對；只用標準函式庫 | 兩堂 |
+| Bash | 依序執行 `.sh` 腳本、連接工具 | 兩堂 |
+| SAMtools | SAM/BAM 轉換、排序、索引與讀段統計 | 兩堂 |
+| BCFtools | VCF 處理；第一堂另做小型 variant calling | 兩堂 |
+| PLINK **1.9** | Genotype QC、PCA、親緣與 ROH | 第一堂 |
+| IGV Desktop | 圖形化查看 reference、BAM、VCF、SEG | 第二堂的視覺核對 |
 
-```powershell
-wsl --install -d Ubuntu
-```
+不需 R、Docker、Conda、GPU、付費軟體或額外 Python 套件。FastQC、aligner、Mutect2 在概念部分介紹，但本次腳本沒有呼叫它們，不必額外安裝。第二堂不使用第一堂的輸出，可以單獨操作。
 
-依提示重新開機，開啟 Ubuntu，建立 Linux 使用者名稱與密碼。輸入密碼不顯示字元是正常現象。在 PowerShell 確認：
+請為 WSL／開發工具預留數 GB 磁碟空間並確認能連線至官方下載站與 GitHub；合成資料本身很小。安裝可能需要管理員權限，分析則不需要 `sudo`。院內電腦請先取得核准；不能安裝時請資訊人員提供合規環境，勿停用防護或繞過權限。
 
-```powershell
+### A2. Windows：WSL2 ＋ Ubuntu
+
+**步驟 1：安裝 Linux 環境。** WSL（Windows Subsystem for Linux）讓 Windows 使用 Linux 工具。本路線選 Windows 11 與 Ubuntu 24.04 LTS。Microsoft 簡易指令也支援 Windows 10 2004、build 19041 以上；作業系統維護狀態與院內政策另行確認。[Microsoft 安裝說明](https://learn.microsoft.com/en-us/windows/wsl/install)
+
+在開始選單搜尋 PowerShell，按右鍵「以系統管理員身分執行」，先查已安裝及可下載的發行版：
+
+~~~powershell
 wsl --list --verbose
-```
+wsl --list --online
+~~~
 
-Ubuntu 的 VERSION 應為 2。若列為 1，確認硬體與政策允許後執行：
+尚未安裝者，確認線上清單有 `Ubuntu-24.04` 後執行：
 
-```powershell
-wsl --set-version Ubuntu 2
-```
+~~~powershell
+wsl --install -d Ubuntu-24.04
+~~~
 
-如果發行版名稱不是 Ubuntu，請使用清單上的實際名稱。已安裝者不必重複安裝；更新與問題排查以 Microsoft 官方文件為準。
+依提示重新開機，從開始選單開啟 Ubuntu 24.04，建立 Linux 帳號與密碼；它們可以不同於 Windows 帳號。輸入密碼不顯示字元是正常現象。已有可用 Ubuntu 不必重裝，尤其不要使用 `wsl --unregister`，這會刪除該環境與資料。
 
-### A3. 在 Ubuntu 安裝本課工具
+**步驟 2：確認 WSL2。** 在 PowerShell 再執行 `wsl --list --verbose`，Ubuntu 的 `VERSION` 應為 `2`。若為 `1`，請先確認硬體虛擬化與政策允許，再執行：
 
-以下改在 Ubuntu 終端機執行，不要在 PowerShell 貼入 `sudo apt`：
+~~~powershell
+wsl --set-version Ubuntu-24.04 2
+~~~
 
-```bash
+發行版名稱必須與清單一致；若清單顯示 `Ubuntu`，就改用 `Ubuntu`。
+
+**步驟 3：改在 Ubuntu 視窗安裝工具。** PowerShell 常見提示為 `PS C:\...>`；Ubuntu 通常為 `使用者@電腦:~$`。下面指令不是貼在 PowerShell、CMD、Git Bash 或 Python 的 `>>>`。
+
+~~~bash
+uname -m
 sudo apt update
-sudo apt install -y python3 plink1.9 samtools bcftools
-python3 --version
+sudo apt install -y git python3 samtools bcftools
+~~~
+
+`apt update` 更新套件清單，`apt install` 安裝工具；`sudo` 要求剛設定的 Linux 密碼。第一堂另外安裝：
+
+~~~bash
+sudo apt install -y plink1.9
 plink1.9 --version
+~~~
+
+PLINK 指令以 Ubuntu 24.04 的 x86_64 為主要路線；ARM 電腦或找不到套件請看 A4。不要改裝 PLINK 2 當成同一工具。完成後跳到 A5，不需再裝 Windows 版 Python／SAMtools。
+
+### A3. macOS：Homebrew ＋ PLINK 1.9
+
+**步驟 1：打開 Terminal。** 按 Command＋空白鍵，搜尋 Terminal，再查看系統：
+
+~~~bash
+sw_vers
+uname -m
+~~~
+
+先核對 [Homebrew 支援範圍](https://docs.brew.sh/Installation)。舊 macOS／Intel Mac 的支援程度不同，安裝若提示不支援，應請資訊人員安排相容工具或核准的 Linux 環境，勿強行覆寫系統。
+
+**步驟 2：安裝 Homebrew。** 它是管理命令列軟體的工具。先執行 `brew --version`；已有版本就跳過重裝。否則前往 [Homebrew 官網](https://brew.sh/)，確認來源與權限後，在 Terminal 執行官方安裝指令：
+
+~~~bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+~~~
+
+這行會下載並執行安裝程式，請閱讀提示再同意。若要求 Command Line Tools，依提示完成，或執行 `xcode-select --install` 並於系統視窗安裝；不用下載完整 Xcode。
+
+安裝結束，**照畫面 Next steps 設定 shellenv**，讓終端機找到 `brew`。若目前視窗仍找不到，Apple Silicon 的標準安裝位置可執行：
+
+~~~bash
+eval "$(/opt/homebrew/bin/brew shellenv)"
+~~~
+
+Intel Mac 的標準位置則用：
+
+~~~bash
+eval "$(/usr/local/bin/brew shellenv)"
+~~~
+
+只選符合安裝位置的一段。`eval` 在此載入 Homebrew 的環境設定；這一行僅影響目前視窗，仍應依 Next steps 完成啟動設定。再用 `brew --version` 確認。
+
+**步驟 3：安裝兩堂共用工具。**
+
+~~~bash
+brew install git python samtools bcftools
+~~~
+
+`python` 是套件名稱，執行時仍叫 `python3`。不要在 `brew install` 前加 `sudo`。套件名稱見 [SAMtools formula](https://formulae.brew.sh/formula/samtools)與 [BCFtools formula](https://formulae.brew.sh/formula/bcftools)。
+
+**步驟 4：第一堂另裝 PLINK。** 第二堂可以跳過。於 [PLINK 1.9 官方頁](https://www.cog-genomics.org/plink/1.9/)選 macOS 64-bit stable，不要選 PLINK 2。以下固定使用 2026-09-27 版本；本次實際檢查它是包含 x86_64 與 arm64 的 Universal binary，Intel 與 Apple Silicon 可用同一檔案。
+
+~~~bash
+mkdir -p "$HOME/bioinfo-tools/plink19-20260927"
+cd "$HOME/bioinfo-tools/plink19-20260927"
+curl -fL \
+  https://s3.amazonaws.com/plink1-assets/plink_mac_20260927.zip \
+  -o plink.zip
+unzip -n plink.zip
+file plink
+./plink --version
+~~~
+
+`mkdir -p` 建立工具目錄；`curl -fL` 下載並在 HTTP 錯誤時失敗；`unzip -n` 解壓但不覆蓋既有檔案；`file` 顯示程式架構。每一步無錯誤才繼續。版本應顯示 PLINK v1.9.0。本例不用一律加裝 Rosetta；如果另用 Intel-only 舊版，才需核對 [Apple Rosetta 說明](https://support.apple.com/en-us/102527)。
+
+為了與 Ubuntu 一樣使用 `plink1.9` 命令，把已確認來源的程式放到個人工具目錄。若目的地已有其他版本，先備份或改名，不要直接取代。
+
+~~~bash
+mkdir -p "$HOME/.local/bin"
+install -m 755 ./plink "$HOME/.local/bin/plink1.9"
+export PATH="$HOME/.local/bin:$PATH"
+plink1.9 --version
+~~~
+
+`install -m 755` 複製並賦予執行權限；`PATH` 是終端機搜尋程式的目錄清單。`export` 只在目前視窗與子程式有效，**每次新開 Terminal 執行第一堂前，再執行 `export PATH="$HOME/.local/bin:$PATH"`**。熟悉 shell 者可自行寫入個人啟動檔。不要只設定 alias，因為子腳本未必能使用。
+
+若 macOS 阻擋下載程式，確認官方來源後依「隱私權與安全性」提示或洽資訊人員處理，不要全域停用 Gatekeeper。完成後前往 A5。
+
+### A4. Linux：套件安裝與相容性
+
+Linux 不需安裝 WSL 或 Homebrew。打開 Terminal，確認發行版與 CPU：
+
+~~~bash
+cat /etc/os-release
+uname -m
+~~~
+
+以下以 **Ubuntu 24.04 LTS、x86_64** 為基準。Debian 可使用相同套件管理命令，但套件版本與架構須另確認。Fedora、Rocky、Arch 不是 apt 系統，請由資訊人員用該系統的套件管理方式提供 A1 工具，再從 A5 檢查，不要直接照貼 apt。
+
+~~~bash
+sudo apt update
+sudo apt install -y git python3 samtools bcftools
+~~~
+
+第一堂另外執行：
+
+~~~bash
+sudo apt install -y plink1.9
+plink1.9 --version
+~~~
+
+若 `Unable to locate package plink1.9`，先查拼字、`apt update` 是否成功及發行版。Ubuntu 的套件位於 **universe**；只有院內允許新增來源時才執行：
+
+~~~bash
+sudo apt install -y software-properties-common
+sudo add-apt-repository universe
+sudo apt update
+sudo apt install -y plink1.9
+~~~
+
+這段新增來源只適用 Ubuntu，不適用 Debian。伺服器沒有 sudo 者，請管理員安裝或啟用既有環境，不要修改系統權限。
+
+**ARM64 限制：** [Ubuntu 24.04 的 plink1.9 套件頁](https://packages.ubuntu.com/en/noble/plink1.9)目前沒有 ARM64 套件。Windows ARM 的 WSL、ARM Linux 不應下載 x86_64 程式硬跑。若 Python、SAMtools、BCFtools 可用，仍可完成第一堂定序部分及第二堂命令列練習；array 部分請資訊人員提供經確認的 PLINK 1.9 ARM 編譯版，或改用核准的 x86_64 Ubuntu 電腦／伺服器。本教材不宣稱已驗證 ARM Linux 的 array 流程。使用遠端主機時，安裝與腳本都在遠端執行，供 IGV 使用的結果需另下載到桌面電腦。
+
+### A5. 共同步驟：確認工具與下載專案
+
+Windows 在 Ubuntu，macOS／Linux 在 Terminal 執行。後文 `.sh` 都用 `bash` 呼叫，因此 Mac 預設是 zsh 也能操作。
+
+~~~bash
+git --version
+python3 --version
+bash --version
 samtools --version
 bcftools --version
-```
+~~~
 
-Python 執行合成資料產生器，僅用標準函式庫，不需 `pip install`。PLINK 1.9 負責 genotype QC、PCA、親緣與 ROH；SAMtools 負責比對檔處理；BCFtools 負責 VCF 與簡化 variant calling。不要將 PLINK 2 的指令直接混入此教材。
+每行應印出版本，不是 `command not found`；SAMtools／BCFtools 顯示多行編譯資訊正常。Python 至少 3.8，因第二堂使用 `math.comb`。第一堂加跑 `plink1.9 --version`，確認是 PLINK 1.9／1.90 系列，不是 2.x 或 PuTTY 的同名連線工具。
 
-Ubuntu 套件庫版本可能不是最新版，但需實際記錄版本。若 `plink1.9` 找不到套件，請資訊人員確認 Ubuntu 的 universe repository 是否啟用；可參考 [PLINK 官方下載頁](https://www.cog-genomics.org/plink/1.9/)，選取與作業系統及 CPU 架構相符版本。手動安裝檔通常叫 `plink`，此時腳本使用 `PLINK=plink bash ../run-array.sh`，逐行指令也相應替換。不要下載不明來源執行檔。
+**第一次下載：** 假設家目錄尚無 `ClinicalBioinfoCourse` 資料夾：
 
-### A4. 將教材從 Windows 放入 Ubuntu
-
-先在 Windows 解壓完整專案，不要只複製單一 Markdown，否則沒有示範腳本。假設資料夾位於 Windows 的 `C:\Users\你的帳號\Downloads\KCGMH_Cource_Series`，在 Ubuntu 執行以下命令；請替換「你的帳號」並確認目的資料夾尚不存在：
-
-```bash
-cp -r "/mnt/c/Users/你的帳號/Downloads/KCGMH_Cource_Series" ~/KCGMH_Cource_Series
-cd ~/KCGMH_Cource_Series/demos/lesson-01-genomics
+~~~bash
+cd ~
+git clone https://github.com/godkin1211/ClinicalBioinfoCourse.git
+cd ClinicalBioinfoCourse
+pwd
 ls
-```
+git rev-parse --short HEAD
+~~~
 
-應看到 `generate.py`、`run-array.sh`、`run-sequence.sh` 與 `README.md`。Windows 路徑以 `/mnt/c/` 存取 C 槽；路徑有空白時加雙引號。建議在 Ubuntu 家目錄內分析，避免混淆兩套檔案路徑。
+公開專案不需 GitHub 帳號或 token。`cd ~` 回到目前使用者的家目錄；WSL 的家目錄是 `/home/帳號`，不是 `C:\Users\帳號`。`git clone` 下載整個專案，`pwd` 顯示位置，`ls` 列出內容。應看到 `lessons`、`demos`、`scripts`、`README.md`。最後一行是教材版本識別碼，請保留。
 
-使用 Windows 記事本或既有文字編輯器閱讀 Markdown／CSV 即可；不需另外安裝編輯器。二進位 BED/BAM 不能用記事本正常閱讀，要用相應工具。
+**已下載過：** 不要再次 clone。先進入既有專案查看狀態：
 
-### A5. 課前完整測試與版本存檔
+~~~bash
+cd ~/ClinicalBioinfoCourse
+git status --short
+~~~
 
-```bash
-python3 generate.py preclass01
-cd preclass01
-PLINK=plink1.9 bash ../run-array.sh
-bash ../run-sequence.sh
+若顯示自己的修改，先保留並詢問協助；不要執行 `reset --hard`。確認沒有要保留的未完成修改，再更新：
+
+~~~bash
+git pull --ff-only
+~~~
+
+`--ff-only` 只允許快轉更新；若失敗請停下，勿強制覆蓋。舊專案若叫 `KCGMH_Cource_Series` 也可繼續使用，只要把後面每個 `~/ClinicalBioinfoCourse` 換成實際位置，不必搬動或刪除舊資料。
+
+只能用瀏覽器時，在 GitHub 選 `Code → Download ZIP`，解壓完整內容，放到家目錄並命名 `ClinicalBioinfoCourse`。ZIP 沒有 Git 紀錄，不能執行 `git pull`、`git rev-parse`，請改記下載日期。Windows 可於 Ubuntu 執行 `explorer.exe ~` 開啟 Linux 家目錄，再以檔案總管複製解壓資料夾。無網路時請講師經核准管道提供完整副本與版本資訊。
+
+### A6. 看懂指令與路徑，再開始分析
+
+Script（腳本）是依序執行的指令檔：`.py` 用 `python3`；`.sh` 用 `bash`。不要雙擊，也不要貼進 Python 的 `>>>`。本教材直接呼叫 Bash，不需先對腳本做 `chmod +x`。
+
+| 寫法 | 意思與用途 |
+|---|---|
+| `cd 目錄` | 切換目前目錄，失敗就先停止，不執行下一行 |
+| `.`／`..` | 目前目錄／上一層；在練習目錄內，`../prepare.sh` 才會指到上一層腳本 |
+| `ls`／`head -n 5 檔案` | 列出檔案／讀前五行，核對位置與欄名 |
+| `# 說明` | 註解；不要連終端機提示符號一起複製 |
+| `>`／`>>` | 把輸出寫到檔案並覆蓋／附加到檔案末尾 |
+| `2>&1` | 把錯誤訊息與一般輸出保存在同一份 log |
+| 行尾 `\` | 指令接續下一行，後面不可留空白 |
+
+路徑有空白時加雙引號，例如 `cd "/Users/你的帳號/My Courses/ClinicalBioinfoCourse"`。看到 `Error`、`Traceback`、`command not found` 先停止；不能只因為後面有檔案就認為成功。
+
+以下使用新的 `practice-local01`。專案若已有 `practice01`，那是既有示範，不要重用。產生器拒絕覆蓋任何已存在目錄；重做請換 `practice-local02`，並同步修改下一行的 `cd`。個人 `practice-local*` 目錄已加入 Git 忽略規則。分析腳本會取代同名輸出，兩次比較應各用一個新目錄。
+
+### A7. 第一堂：從合成資料到完整驗證
+
+**步驟 1：進入腳本所在位置。** 下列從任何目錄都可開始；若你沒有使用預設專案名稱，修改第一行。Mac 新開視窗者先依 A3 設定 PATH。
+
+~~~bash
+cd ~/ClinicalBioinfoCourse/demos/lesson-01-genomics
+pwd
+ls generate.py run-array.sh run-sequence.sh verify.py
+~~~
+
+四個檔案都列出才繼續。`generate.py` 產生資料；`run-array.sh` 處理 genotype；`run-sequence.sh` 處理定序檔；`verify.py` 比較結果與預設答案。
+
+**步驟 2：產生自己的練習資料。**
+
+~~~bash
+python3 generate.py practice-local01
+cd practice-local01
+pwd
+ls
+~~~
+
+成功時會印出 `Created ...`，並說明 40 samples、6000 SNPs 與預期 SNV。目錄中應看到 `array.ped`、`array.map`、`reference.fa`、`aligned.sam`、`review.vcf`、`intensity.csv`。PED／MAP 含 40 個人工樣本與 6,000 個 SNP；SAM 已人工指定比對位置，不需要下載人類 reference 或執行 aligner。
+
+**步驟 3：執行 array 流程。** 以下在剛建立的 `practice-local01` 內做：
+
+~~~bash
+PLINK=plink1.9 bash ../run-array.sh > array.run.log 2>&1
+echo $?
+tail -n 12 array.run.log
+~~~
+
+`PLINK=plink1.9` 告訴腳本要呼叫哪個程式，`bash` 執行上一層的腳本。輸出先存入 `array.run.log`，所以暫時沒有畫面訊息正常；等待提示符號回來後才輸入下一行。**緊接著的 `echo $?` 應為 `0`**，代表上一命令正常結束；非 0 時先查 log，不要進入下個步驟。`tail` 顯示 log 最後幾行；完整 log 可用文字編輯器讀取。
+
+腳本依序產生原始 BED/BIM/FAM、篩選前 QC、樣本篩選、位點篩選、LD pruning、親緣、PCA、ROH。它保留中間檔與 PLINK 自己的 `.log`。請核對：
+
+~~~bash
+wc -l raw.fam clean.fam raw.bim clean.bim
+head -n 5 qc.imiss
+head -n 5 qc.lmiss
+head -n 3 related.genome
+head -n 3 structure.eigenvec
+head -n 3 roh.hom
+~~~
+
+`wc -l` 的行數應依序為 **40、39、6000、5999**；這些檔案沒有標題列，因此可直接當樣本數／位點數。`qc.imiss` 的 S40 缺失比例約 0.3333，`qc.lmiss` 的 v1 約 0.275。PCA 產生 39 列，每列 FID、IID 加四個 PC；S01/S02 的 PI_HAT 應接近 1，S03 有 chr1 ROH。PC 正負號及部分 ROH 邊界可能隨工具版本不同，不要要求整份文字逐字一致。
+
+**步驟 4：執行定序檔案流程。** 不要離開目前目錄：
+
+~~~bash
+bash ../run-sequence.sh > sequence.run.log 2>&1
+echo $?
+tail -n 12 sequence.run.log
 cat calls.tsv
-wc -l clean.fam clean.bim
+cat review.tsv
+~~~
+
+同樣要求退出碼 0。流程先為 FASTA 建索引，再把 SAM 轉成排序、索引的 BAM，產生 flagstat 與逐位置深度；接著實際呼叫 BCFtools mpileup／call，最後查詢 VCF。`calls.tsv` 應有以下一列，欄位間是 tab：
+
+~~~text
+chrToy  1000  A  C  0/1  40  20,20
+~~~
+
+依序為染色體、位置、REF、ALT、GT、DP、AD：第 1000 位 A→C、雜合、深度 40、REF/ALT 各 20。`review.tsv` 則有四個另外人工設計的案例，**不是**這次 caller 的四筆輸出。`sample.bam`、`sample.bam.bai`、`calls.vcf.gz` 與 `calls.vcf.gz.csi` 都應存在。
+
+**步驟 5：讓程式自動核對兩條流程。**
+
+~~~bash
+python3 ../verify.py . > verification.txt 2>&1
+echo $?
+cat verification.txt
+~~~
+
+應為退出碼 0，並看到：
+
+~~~text
+PASS: sizes, missingness, duplicate, PCA, ROH, called SNV and review cases
+~~~
+
+最後的 `.` 是「請核對目前目錄」。這一步同時需要 array 與 sequence 輸出；只做其中一條不能得到完整 PASS。PASS 表示教學範例符合預設，不是臨床流程效能驗證。若有 AssertionError，不要改答案或刪除驗證條件，先保留 log 查明是哪一項不同。
+
+### A8. 保存第一堂的可追溯紀錄
+
+仍在自己的練習目錄執行；`versions.txt` 每次會重新建立，先前紀錄要保留時請先另存。
+
+~~~bash
 python3 --version > versions.txt
 plink1.9 --version >> versions.txt
 samtools --version >> versions.txt
 bcftools --version >> versions.txt
-```
+uname -a >> versions.txt
+git rev-parse HEAD > course-commit.txt
+~~~
 
-確認有 39 個樣本、5,999 個 SNP，以及 chrToy:1000 雜合 SNV。保存產生器、兩個 shell 腳本、版本檔、PLINK log 與結果，不只留下截圖。
+ZIP 使用者跳過最後一行，改在筆記記錄下載日期。請一起保存原始合成檔、`versions.txt`、`course-commit.txt`、兩份 `*.run.log`、PLINK 的 `*.log`、`verification.txt` 與結果，不只交截圖。你應能回答「何時、以哪版教材與工具、對哪份輸入、用什麼參數跑出結果」。
 
-### A6. 無法安裝與常見問題
+### A9. 第一堂常見問題：先查原因，再重跑
 
-| 現象 | 處理 |
+| 現象 | 先做什麼 |
 |---|---|
-| 無管理員權限或院內不允許 WSL | 先洽資訊部門；也可與同學共用操作環境，或先完成第 4.2 節的情境練習 |
-| `command not found` | 確認在 Ubuntu、安裝成功，以及名稱為 plink1.9 而非 plink2 |
-| `No such file` | 先執行 `pwd`、`ls`；確認目前在產生出的練習資料夾 |
-| `FileExistsError` | 產生器保護既有資料；改用新的 practice02 等名稱 |
-| `$'\r': command not found` | 腳本被轉成 Windows CRLF；以編輯器改存 UTF-8／LF 後重跑 |
-| 找不到 reference／索引 | 確認 reference.fa、其 .fai 及 BAM index 都在練習目錄 |
-| PLINK 提示缺少 phenotype | 本課 FAM phenotype 刻意為 -9；只做 QC，不做疾病關聯分析 |
-| 沒有性染色體可做 sex check | 本教材的設計限制，不是安裝錯誤 |
+| `command not found` | 用 `command -v python3`、`command -v samtools`、`command -v bcftools`、`command -v plink1.9` 查位置；Windows 確認在 Ubuntu，Mac 檢查 Homebrew／個人 PATH |
+| PLINK 顯示 PuTTY／2.x、參數不認得 | 用 `plink1.9 --version` 確認版本；不要用同名 SSH 軟體或 PLINK 2 代替 |
+| `Bad CPU type`／`Exec format error` | 執行 `uname -m` 與 `file 程式路徑`，核對 CPU 與作業系統；不可把 Windows .exe 當 Linux 工具 |
+| `FileExistsError` | 產生器保護舊資料；改 `practice-local02` 並同步改 `cd`，不要刪舊資料強行重做 |
+| `No such file`／找不到 `array.ped` | 用 `pwd`、`ls` 確認在練習目錄，不是在專案根目錄或腳本目錄 |
+| `Permission denied` | 腳本用 `bash ../run-array.sh`；資料放在自己有寫入權限的家目錄，不用 sudo 跑分析 |
+| `$'\r': command not found` | 腳本被存成 CRLF；用編輯器改存 UTF-8／LF，或重新取得未修改的教材，不用 Word 編輯程式 |
+| PLINK 提示無 phenotype | 本例刻意以 -9 表示未提供，不做疾病關聯分析；仍需確認退出碼 0 和完整 PASS |
+| 沒有性染色體可做 sex check | 合成資料只有常染色體，屬範例限制 |
+| 驗證失敗但檔案存在 | 可能是前次殘留；保留 log，用新練習目錄由產生資料重新做，不混合兩次輸出 |
 
-若只需 array 操作，可從官方下載 Windows 版 PLINK 1.9、解壓後在該資料夾的 PowerShell 用 ` .\plink.exe --version` 確認。但本文的 Bash 腳本、awk 與管線以 WSL 為標準路線；原生 Windows 方案不等於已具備完整示範環境。
+安裝時若網路／TLS／代理伺服器報錯，請找資訊人員確認核准的網路設定；不要關閉 SSL 驗證。提供協助時請附 OS、CPU、工具版本、`pwd`、完整命令與第一個錯誤，不需提供病人資料或密碼。
 
 ## 附錄 B：示範範圍與後續學習
 
@@ -528,4 +787,4 @@ bcftools --version >> versions.txt
 - [BCFtools](https://samtools.github.io/bcftools/bcftools.html)：variant calling 與 VCF 查詢。
 - [Microsoft WSL](https://learn.microsoft.com/en-us/windows/wsl/install)：Windows 安裝與權限。
 
-軟體文件核對日期：2026-09-13。Windows 安裝步驟依官方文件整理；本專案的實際執行驗證環境與結果見[示範說明](../demos/lesson-01-genomics/README.md)，不宣稱已在所有 Windows／Ubuntu 組合測試。
+安裝文件核對日期：2026-09-30。三種系統的安裝步驟依官方文件整理；本專案的實際執行驗證環境與結果見[示範說明](../demos/lesson-01-genomics/README.md)，不宣稱已在所有 Windows／Ubuntu 組合測試。

@@ -4,17 +4,22 @@
 
 ## 執行
 
-Windows 安裝方式見教材附錄；在 Ubuntu／WSL 的本資料夾執行：
+初次操作請先照[教材附錄 A](../../lessons/lesson-02-materials.md#附錄-a依作業系統安裝到第一次成功執行)：A2 為 Windows／WSL2，A3 為 macOS，A4 為 Linux（Ubuntu／Debian），A5 下載專案，A7 執行並驗證，A8–A9 安裝 IGV 與載入完整結果，A10 排錯。第二堂不需 PLINK，也不需第一堂的輸出。
+
+已完成安裝者，在 Windows 的 Ubuntu、macOS Terminal 或 Linux Terminal 執行；路徑不同時調整第一行：
 
 ```bash
-python3 generate.py practice01
-cd practice01
+cd ~/ClinicalBioinfoCourse/demos/lesson-02-somatic
+python3 generate.py practice-local01
+cd practice-local01
 bash ../prepare.sh
 python3 ../verify.py .
 python3 ../models.py
 ```
 
-產生器拒絕覆蓋既有資料夾。`prepare.sh` 重跑會取代同名結果。工具只需 Python 3、SAMtools、BCFtools；圖形操作另用 IGV Desktop。無 Python 第三方套件。
+產生器拒絕覆蓋既有資料夾，重做改用 `practice-local02` 並同步更改 `cd`。`prepare.sh` 重跑會取代同名結果。分析只需 Python 3.8 以上、SAMtools、BCFtools；圖形操作另用 IGV Desktop。無 Python 第三方套件。
+
+驗證成功應顯示 `PASS: BAM-derived counts, bias patterns, VCF samples/flags, CN/VAF models, indexed artifacts`。附錄提供各步驟的輸入／輸出、log、退出碼、數值核對與 9 個 IGV 所需檔案；圖形操作尚未完成不影響命令列驗證，但兩者應分別記錄。
 
 ## 檔案與限制
 
@@ -39,7 +44,9 @@ python3 ../models.py
 
 核心流程與 `verify.py` 通過；另以 SAMtools mpileup 獨立核對兩份 BAM 的三個位點，深度與正反向 ALT 計數均相符，BCFtools norm 的 reference 檢查亦通過。教材內 Bash 區塊通過語法檢查，本地連結可解析。
 
-IGV 操作依官方文件撰寫，Windows／WSL 安裝及 Windows IGV 圖形操作尚未在 Windows 主機實測。IGV 的 downsampling、比例尺及配色可能因版本／偏好而異，請以完整 BAM 計數核對，不以畫面可見讀段數代替計數。
+2026-09-30 再驗證：macOS arm64、Python 3.14.3、SAMtools／BCFtools 1.22、HTSlib 1.22.1。在新目錄（含空白路徑）產生資料、執行 `prepare.sh`、`verify.py`、`models.py` 與 BAM quickcheck，完整 PASS；模型的 0.05、0.071429、0.485427 均符合教材。
+
+Windows／WSL、Linux 的安裝，以及三種系統的 IGV 圖形操作依官方文件整理，本次未在對應環境逐一實測，也未重新安裝整套 macOS 工具。IGV 的 downsampling、比例尺及配色可能因版本／偏好而異，請以完整 BAM 計數核對，不以畫面可見讀段數代替計數。來源與相容性見[查核紀錄](../../sources/lesson-01-02-practical-setup-sources.md)。
 
 ## 核對 checklist
 

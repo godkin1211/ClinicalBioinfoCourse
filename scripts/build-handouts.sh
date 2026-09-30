@@ -7,7 +7,7 @@ if [[ $# -eq 0 ]]; then
   set -- 01 02
 fi
 for lesson in "$@"; do
-  pdf_author='OO醫院精準醫學核心實驗室組長邱XX'
+  pdf_author='奇美醫院精準醫學核心實驗室組長邱家軍'
   case "$lesson" in
     01) pdf_title='從 SNP Array 到 WES/WGS：基因體資料分析入門' ;;
     02) pdf_title='癌症體細胞基因體分析：從定序證據到可信的候選事件' ;;
