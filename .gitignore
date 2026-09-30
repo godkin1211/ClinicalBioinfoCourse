@@ -1,0 +1,25 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+# Nextflow runtime artifacts
+.nextflow/
+.nextflow.log*
+work/
+demos/nextflow-qc/results/
+
+# AI-agent generated classroom outputs
+demos/ai-agent/outputs/
+
+# Local rendering / QA intermediates; keep final PDFs, slides and teaching outputs.
+/tmp/
+/output/playwright/
+
+# Local environments and credentials must not enter the public repository.
+.venv/
+node_modules/
+.env
+.env.*
+!.env.example
+*.pem
+*.key

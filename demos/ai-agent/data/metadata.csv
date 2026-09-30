@@ -1,0 +1,9 @@
+sample_id,condition,batch,reported_sex,collection_site
+S01,Control,B1,M,SiteA
+S02,Control,B1,F,SiteB
+S03,Control,B1,F,SiteA
+S04,Control,B2,M,SiteB
+S05,Case,B2,M,SiteA
+S06,Case,B2,F,SiteB
+S07,Case,B2,F,SiteA
+S08,Case,B1,M,SiteB

@@ -1,0 +1,25 @@
+#set document(title: "$pdf-title$", author: "$pdf-author$")
+#set page(paper: "a4", margin: (top: 20mm, bottom: 19mm, left: 18mm, right: 18mm),
+  header: context [#set text(size: 8pt, fill: rgb("607080")); 高雄長庚臨床生物資訊系列課程 #h(1fr) $course-label$],
+  footer: context [#set text(size: 8pt, fill: rgb("607080")); 學員教材 #h(1fr) #counter(page).display("1")])
+#set text(font: ("PingFang TC", "Menlo"), size: 10pt, lang: "zh", region: "TW", hyphenate: false)
+#set par(justify: false, leading: 5pt, spacing: 9pt)
+#set heading(numbering: none)
+#show heading.where(level: 1): set text(size: 19pt, fill: rgb("163D52"), weight: "bold")
+#show heading.where(level: 2): set text(size: 15pt, fill: rgb("163D52"), weight: "bold")
+#show heading.where(level: 3): set text(size: 11.5pt, fill: rgb("245A6D"), weight: "bold")
+#show link: set text(fill: rgb("17658B"))
+#set table(inset: 6pt, stroke: 0.4pt + rgb("CDD9DF"), fill: (x,y) => if y == 0 {rgb("E7EFF3")} else if calc.odd(y) {rgb("F7F9FA")} else {white})
+#show table: set text(size: 8.5pt)
+#show table: set par(leading: 3pt)
+#show raw.where(block: false): set text(font: ("Menlo", "PingFang TC"), size: 8.5pt)
+#show raw.where(block: true): it => block(width: 100%, breakable: false, fill: rgb("F1F4F6"), inset: 9pt, radius: 3pt)[
+  #set text(font: ("Menlo", "PingFang TC"), size: 7.7pt)
+  #set par(leading: 3pt, spacing: 0pt)
+  #for (i, line) in it.text.split("\n").enumerate() {
+    if i > 0 { linebreak() }
+    text(line)
+  }
+]
+#let horizontalrule = line(length: 100%, stroke: 0.5pt + rgb("CDD9DF"))
+$body$

@@ -1,0 +1,9 @@
+SYNTHETIC TEACHING DATA ONLY. Not a clinical benchmark or biological discovery.
+Seed: 20260929; 3000 artificial genes; 12 independent simulated samples.
+Design: ~ batch + condition; contrast: Case / Control; alpha: 0.05.
+Filter: >=10 counts in >=3 samples (teaching choice only).
+LFC values are unshrunken; VST and PCA are not batch-corrected.
+No FASTQ processing, alignment, transcript quantification, or splicing test was run.
+PSI examples are arithmetic only, not rMATS output.
+Genes retained: 2984; finite adjusted p-values: 2984; padj < 0.05: 283.
+All input and mathematical checks passed. See sessionInfo.txt for package versions.

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Audit RNA-seq Analysis"
+  short_description: "Plan and audit reproducible bulk RNA-seq analyses"
+  default_prompt: "Use $audit-rnaseq-analysis to review this bulk RNA-seq dataset and propose a human-verifiable analysis plan."

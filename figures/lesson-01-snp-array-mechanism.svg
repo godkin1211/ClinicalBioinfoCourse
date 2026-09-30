@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 410" role="img" aria-labelledby="array-title array-desc" font-family="PingFang TC, Microsoft JhengHei, system-ui, sans-serif">
+  <title id="array-title">Infinium II SNP array：從 A/G 個體、單鹼基延伸到基因型群聚</title>
+  <desc id="array-desc">左側是同一個體兩條同源染色體，各自都是雙股 DNA：一條在位點為 A/T 鹼基對，另一條為 G/C 鹼基對。擴增、片段化、變性後，本例以互補股的 T 或 C 作模板。同一種固定在微珠上的探針，於 SNP 前的 3′ 端延伸一個帶標記核苷酸，分別補入 A 或 G。染色掃描後，校正兩種訊號並與群聚模型比較，判定 A/A、A/G 或 G/G。右圖為概念群聚，每個點是一個樣本，並非單一 DNA 分子。</desc>
+  <style>
+    .am-panel{fill:#edf2ef}.am-head{font-size:23px;font-weight:700;fill:#183b40}
+    .am-text{font-size:21px;fill:#183b40}.am-small{font-size:19px;fill:#415b62}
+    .am-base{font-size:27px;font-weight:700;text-anchor:middle;dominant-baseline:middle}
+    .am-line{fill:none;stroke:#6b8386;stroke-width:3;stroke-linecap:round}
+    .am-bond{stroke:#9eafad;stroke-width:2;stroke-dasharray:3 4}
+    .am-a{fill:#087c83}.am-g{fill:#b44b27}
+    .am-probe{fill:none;stroke:#183b40;stroke-width:5;stroke-linecap:round}
+    .am-arrow{fill:none;stroke:#087c83;stroke-width:3;marker-end:url(#am-tip)}
+  </style>
+  <defs><marker id="am-tip" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6Z" fill="#087c83"/></marker></defs>
+  <rect class="am-panel" x="0" y="0" width="270" height="410" rx="8"/>
+  <rect class="am-panel" x="300" y="0" width="430" height="410" rx="8"/>
+  <rect class="am-panel" x="760" y="0" width="400" height="410" rx="8"/>
+
+  <!-- Two homologues, each shown as its own DNA duplex. -->
+  <text class="am-head" x="17" y="33">① 檢體：兩份染色體</text>
+  <text class="am-text" x="17" y="66">放大 A/G 雜合位點</text>
+  <text class="am-small" x="17" y="102">同源染色體 1</text>
+  <path class="am-line" d="M52 128 H128 M162 128 H220 M52 166 H128 M162 166 H220"/>
+  <path class="am-bond" d="M70 133 V161 M94 133 V161 M118 133 V161 M145 141 V153 M174 133 V161 M198 133 V161"/>
+  <text class="am-small" x="17" y="134">5′</text><text class="am-small" x="230" y="134">3′</text>
+  <text class="am-small" x="17" y="172">3′</text><text class="am-small" x="230" y="172">5′</text>
+  <text class="am-base am-a" x="145" y="128">A</text><text class="am-base" x="145" y="166">T</text>
+  <text class="am-small" x="17" y="222">同源染色體 2</text>
+  <path class="am-line" d="M52 248 H128 M162 248 H220 M52 286 H128 M162 286 H220"/>
+  <path class="am-bond" d="M70 253 V281 M94 253 V281 M118 253 V281 M145 261 V273 M174 253 V281 M198 253 V281"/>
+  <text class="am-small" x="17" y="254">5′</text><text class="am-small" x="230" y="254">3′</text>
+  <text class="am-small" x="17" y="292">3′</text><text class="am-small" x="230" y="292">5′</text>
+  <text class="am-base am-g" x="145" y="248">G</text><text class="am-base" x="145" y="286">C</text>
+  <text class="am-text" x="17" y="344">擴增、片段化、變性</text>
+  <text class="am-small" x="17" y="376">本例以 T/C 互補股作模板</text>
+  <path class="am-arrow" d="M276 200 H294"/>
+
+  <!-- Both rows use copies of the SAME probe sequence, not allele-specific probes. -->
+  <text class="am-head" x="318" y="33">② 探針雜交＋單鹼基延伸</text>
+  <text class="am-text" x="318" y="66">同一種探針，3′ 端停在 SNP 前</text>
+  <text class="am-small" x="318" y="112">模板</text>
+  <text class="am-small" x="382" y="112">3′</text><text class="am-small" x="688" y="112">5′</text>
+  <path class="am-line" d="M414 107 H594 M630 107 H675"/>
+  <text class="am-base" x="612" y="108">T</text>
+  <path class="am-bond" d="M440 114 V147 M470 114 V147 M500 114 V147 M530 114 V147 M560 114 V147 M612 124 V138"/>
+  <circle cx="342" cy="175" r="16" fill="#bdd0ce" stroke="#183b40" stroke-width="2"/>
+  <path class="am-probe" d="M354 164 L386 154 H576"/>
+  <text class="am-small" x="380" y="181">5′</text>
+  <path d="M576 154 H612" stroke="#087c83" stroke-width="5"/>
+  <circle cx="612" cy="154" r="18" fill="#087c83"/>
+  <text class="am-base" x="612" y="155" fill="white">A</text>
+  <text class="am-text am-a" x="631" y="145">*</text><text class="am-small" x="651" y="161">3′</text>
+  <text class="am-small" x="322" y="206">微珠</text><text class="am-small" x="436" y="190">固定探針</text>
+  <text class="am-small" x="318" y="240">模板</text>
+  <text class="am-small" x="382" y="240">3′</text><text class="am-small" x="688" y="240">5′</text>
+  <path class="am-line" d="M414 235 H594 M630 235 H675"/>
+  <text class="am-base" x="612" y="236">C</text>
+  <path class="am-bond" d="M440 242 V275 M470 242 V275 M500 242 V275 M530 242 V275 M560 242 V275 M612 252 V266"/>
+  <circle cx="342" cy="303" r="16" fill="#bdd0ce" stroke="#183b40" stroke-width="2"/>
+  <path class="am-probe" d="M354 292 L386 282 H576"/>
+  <text class="am-small" x="380" y="309">5′</text>
+  <path d="M576 282 H612" stroke="#b44b27" stroke-width="5"/>
+  <circle cx="612" cy="282" r="18" fill="#b44b27"/>
+  <text class="am-base" x="612" y="283" fill="white">G</text>
+  <text class="am-text am-g" x="631" y="273">*</text><text class="am-small" x="651" y="289">3′</text>
+  <text class="am-small" x="436" y="318">相同探針的另一拷貝</text>
+  <text class="am-text" x="318" y="359">*＝可偵測標記；再染色、掃描</text>
+  <text class="am-small" x="318" y="392">示意色不代表儀器的實際螢光色</text>
+  <path class="am-arrow" d="M736 200 H754"/>
+
+  <!-- Deliberately schematic clusters; each point represents a sample. -->
+  <text class="am-head" x="778" y="33">③ 雙訊號 → 基因型群聚</text>
+  <text class="am-small" x="778" y="68">正規化後，與群聚模型比較</text>
+  <text class="am-small" x="783" y="98">G 訊號 ↑</text>
+  <path class="am-line" d="M799 111 V302 H1138"/>
+  <text class="am-small" x="1003" y="331">A 訊號 →</text>
+  <g fill="#b44b27"><circle cx="834" cy="140" r="5"/><circle cx="849" cy="135" r="5"/><circle cx="847" cy="151" r="5"/><circle cx="859" cy="143" r="5"/><circle cx="830" cy="154" r="5"/></g>
+  <text class="am-text" x="871" y="140">G/G（BB）</text>
+  <g fill="#52676d"><circle cx="964" cy="198" r="5"/><circle cx="980" cy="189" r="5"/><circle cx="984" cy="207" r="5"/><circle cx="968" cy="215" r="5"/><circle cx="975" cy="203" r="5"/></g>
+  <ellipse cx="975" cy="203" rx="29" ry="28" fill="none" stroke="#183b40" stroke-width="2" stroke-dasharray="5 4"/>
+  <text class="am-text" x="986" y="166">A/G（AB）</text>
+  <g fill="#087c83"><circle cx="1090" cy="271" r="5"/><circle cx="1108" cy="263" r="5"/><circle cx="1105" cy="282" r="5"/><circle cx="1120" cy="273" r="5"/><circle cx="1094" cy="284" r="5"/></g>
+  <text class="am-text" x="1007" y="250">A/A（AA）</text>
+  <rect x="779" y="351" width="362" height="36" rx="4" fill="#d8e8e3"/>
+  <text class="am-text" x="797" y="377">本例兩種訊號 → A/G（AB）</text>
+  <text class="am-small" x="778" y="407">概念圖；每個點＝一個樣本</text>
+</svg>
