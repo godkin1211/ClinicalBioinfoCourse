@@ -2,6 +2,8 @@
 
 第二堂另見：[癌症體細胞基因體分析投影片](lesson-02-somatic.html)與[操作說明](lesson-02-README.md)。
 
+第三堂另見：[Bulk RNA-seq 與可變剪接投影片](lesson-03-bulk-rnaseq.html)、[逐頁詳解](lesson-03-explanations.html)與[操作說明](lesson-03-README.md)。
+
 用 Chrome、Edge 或其他支援現代 HTML 的瀏覽器開啟 `lesson-01-genomics.html`。
 
 - 54 張、16:9；第 1–46 張為主課程，第 47–54 張為操作附錄與參考資料。

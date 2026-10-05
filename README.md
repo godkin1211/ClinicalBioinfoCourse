@@ -43,6 +43,8 @@
 ### 第三堂：Bulk RNA-seq 與可變剪接
 
 - [PDF 學員講義](output/pdf/lesson-03-materials.pdf)：26 頁，含圖表、程式碼、練習詳解與參考來源。以 `bash scripts/build-handouts.sh 03` 重新編譯，不重建前兩堂 PDF。
+- [HTML 投影片](output/slides/lesson-03-bulk-rnaseq.html)：56 頁、16:9、離線播放；涵蓋研究設計、檢體／文庫、QC、定量、差異表現與可變剪接。最後兩頁為四套 RNA-seq 工具比較與 OpenAI NGS Analysis Workbench。[操作與頁次導覽](output/slides/lesson-03-README.md)。
+- [逐頁詳解閱讀版](output/slides/lesson-03-explanations.html)：依完整講義對應每頁概念、算例與限制；投影片按 `E` 可直接展開。
 - [完整學員教材](lessons/lesson-03-materials.md)：12 章正文，從 RNA 背景、研究設計、檢體與文庫，逐步說明資料格式、QC、定量、正規化、差異表現及可變剪接；附程式／圖表導讀、12 題練習詳解與來源，不列段落授課時長。
 - [合成資料示範與有註解的 R 程式](demos/lesson-03-bulk-rnaseq/README.md)：3,000 個人工基因、12 個合成樣本；DESeq2、PCA、MA／volcano、樣本距離與 PSI 算例。[已執行輸出](output/lesson-03-demo)附實際版本及執行範圍；不含 FASTQ 比對或正式剪接檢定。
 - [課程簡介與閱讀路線](lessons/lesson-03-bulk-rnaseq.md)、[教材來源與查核紀錄](sources/lesson-03-materials-sources.md)。
