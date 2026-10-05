@@ -7,6 +7,9 @@ __pycache__/
 .nextflow.log*
 work/
 demos/nextflow-qc/results/
+/demos/ngs-workbench-qc/runs/
+/demos/ngs-workbench-qc/data/*
+!/demos/ngs-workbench-qc/data/.gitkeep
 
 # AI-agent generated classroom outputs
 demos/ai-agent/outputs/
