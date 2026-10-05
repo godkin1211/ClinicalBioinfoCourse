@@ -1,0 +1,8 @@
+{
+  "input": "/Users/godkin/Projects/KCGMH_Cource_Series/demos/ngs-workbench-qc/config/20261005-raw-qc/samplesheet.csv",
+  "outdir": "/Users/godkin/Projects/KCGMH_Cource_Series/demos/ngs-workbench-qc/runs/20261005-raw-qc/results",
+  "skip_trim": true,
+  "igenomes_ignore": true,
+  "custom_config_base": "/Users/godkin/Projects/KCGMH_Cource_Series/demos/ngs-workbench-qc/config/20261005-raw-qc/site",
+  "multiqc_title": "SRR6357070 public FASTQ QC demo"
+}
