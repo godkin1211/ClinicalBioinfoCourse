@@ -65,6 +65,25 @@ fs.mkdirSync(out, {recursive:true});
     await page.locator('#fullscreen').click();assert.ok(await page.evaluate(()=>document.fullscreenElement));
     await page.evaluate(()=>document.exitFullscreen());
     await page.goto(url+'#slide-55');assert.equal(await page.locator('#status').textContent(),'55 / 56');
+    const toolLinks=page.locator('.active table td:first-child a');
+    const toolUrls=['https://github.com/developerpiru/BEAVR','https://github.com/knowmics-lab/RNAdetector','https://ranaseq.eu/','https://bioinformatics.sdstate.edu/idep/'];
+    assert.equal(await toolLinks.count(),toolUrls.length);
+    // Intercept external navigation: test links/popups without contacting analysis services.
+    await page.context().route('https://**/*',route=>route.fulfill({contentType:'text/html',body:'Link navigation test'}));
+    for(let i=0;i<toolUrls.length;i++) {
+      const link=toolLinks.nth(i);
+      assert.equal(await link.getAttribute('href'),toolUrls[i]);
+      assert.equal(await link.getAttribute('target'),'_blank');
+      assert.equal(await link.getAttribute('rel'),'noopener noreferrer');
+      const popupReady=page.waitForEvent('popup');
+      await link.click();
+      const popup=await popupReady;
+      await popup.waitForLoadState();
+      assert.equal(popup.url(),toolUrls[i]);
+      assert.equal(await popup.evaluate(()=>window.opener),null);
+      await popup.close();
+      assert.equal(await page.locator('#status').textContent(),'55 / 56');
+    }
     for(const link of await page.locator('a').evaluateAll(es=>es.map(e=>e.href).filter(h=>h.startsWith('file:'))))assert.ok(fs.existsSync(fileURLToPath(new URL(link))),link);
     await page.emulateMedia({media:'print'});assert.equal(await page.locator('.slide:visible').count(),count);
     const nojs=await browser.newContext({javaScriptEnabled:false});
@@ -84,7 +103,7 @@ fs.mkdirSync(out, {recursive:true});
       await review.setContent(`<style>body{margin:8px;background:#dce5df;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font:16px sans-serif}img{display:block;width:100%}b{display:block;padding:3px}</style>${items.join('')}`);
       await review.screenshot({path:path.join(out,`contact-${start/12+1}.png`),fullPage:true});
     }
-    const report={count,issues,errors,network,checks:'both viewports; screenshots; all notes and images; local links; keyboard/button navigation; TOC; fullscreen; hash; print visibility; no-JS; unique reading anchors; final two topics'};
+    const report={count,issues,errors,network,checks:'both viewports; screenshots; all notes and images; local links; four tool links and intercepted new-tab navigation; keyboard/button navigation; TOC; fullscreen; hash; print visibility; no-JS; unique reading anchors; final two topics'};
     fs.writeFileSync(path.join(out,'qa.json'),JSON.stringify(report,null,2));
     console.log(JSON.stringify(report,null,2));
     if(issues.length||errors.length||network.length)process.exitCode=1;

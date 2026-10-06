@@ -358,10 +358,10 @@ add('課後 · 取用與重現', '從已保存的圖，回到程式與方法文�
 
 add('工具比較 · 如何選', '四個 RNA-seq 工具：本堂優先使用 iDEP',
     table(['工具', '起點／分析重點', '課堂使用考量'], [
-        ['BEAVR', 'Counts → DESeq2、探索與視覺化', '聚焦下游；需先部署 R／Docker 環境'],
-        ['RNAdetector', 'FASTQ／BAM／SAM → 定量、DE 等', '流程廣；安裝、Docker 與參考資料準備較多'],
-        ['RaNA-seq', 'FASTQ／公開 accession → QC、定量、DE', '網頁端全流程；需預留上傳與運算等待'],
-        ['iDEP ★', 'Gene counts → PCA、DE、富集與圖表', '適合本堂即時判讀；不取代 FASTQ QC／比對'],
+        ['<a href="https://github.com/developerpiru/BEAVR" target="_blank" rel="noopener noreferrer" title="開啟 BEAVR 專案頁（另開分頁）">BEAVR</a>', 'Counts → DESeq2、探索與視覺化', '聚焦下游；需先部署 R／Docker 環境'],
+        ['<a href="https://github.com/knowmics-lab/RNAdetector" target="_blank" rel="noopener noreferrer" title="開啟 RNAdetector 專案頁（另開分頁）">RNAdetector</a>', 'FASTQ／BAM／SAM → 定量、DE 等', '流程廣；安裝、Docker 與參考資料準備較多'],
+        ['<a href="https://ranaseq.eu/" target="_blank" rel="noopener noreferrer" title="開啟 RaNA-seq 網站（另開分頁）">RaNA-seq</a>', 'FASTQ／公開 accession → QC、定量、DE', '網頁端全流程；需預留上傳與運算等待'],
+        ['<a href="https://bioinformatics.sdstate.edu/idep/" target="_blank" rel="noopener noreferrer" title="開啟 iDEP 網站（另開分頁）">iDEP ★</a>', 'Gene counts → PCA、DE、富集與圖表', '適合本堂即時判讀；不取代 FASTQ QC／比對'],
     ]) + take('推薦是依本堂教學目標，不是準確度排名。Gene counts 介面也不等於完成剪接分析。'),
     '', refs('beavr', 'rnadetector', 'rana', 'idep') + ' · 2026-10-05 文件查核；未宣稱完成四站實測', 'tools',
     '''### 如何選擇
