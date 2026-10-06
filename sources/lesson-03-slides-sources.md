@@ -16,6 +16,19 @@
 
 VST／PCA 沒有移除 batch，圖上的 log2FC 未收縮。PSI 僅算術示範；沒有執行 FASTQ QC、STAR、Salmon、featureCounts、rMATS、LeafCutter 或 DEXSeq。外顯子組合圖是概念示意，非真實 IGV／sashimi 圖，也非按 genomic coordinates 繪製。
 
+## 第 51 頁：IGV 官方圖片（2026-10-06 更新）
+
+教學引用 [IGV RNA-seq 官方文件](https://igv.org/doc/desktop/UserGuide/tracks/alignments/rna_seq/) 的兩張範例圖，來源為 IGV team。原始檔保存於 `figures/lesson-03-igv/`，HTML 內嵌圖片可離線顯示；點圖連至專案內原始檔以原尺寸觀看。僅以 CSS 等比例縮放，沒有裁切、重繪、變更數值或 AI 生成。兩張圖片是獨立範例，不宣稱相同座標或本課分析結果。
+
+| 原圖 | 尺寸 | SHA-256 |
+|---|---|---|
+| [SL_Sashimi1.png](https://igv.org/doc/desktop/UserGuide/img/SL_Sashimi1.png) | 1003×590 | `58030076b77c87355c1e655f91359d4417f860b7adb9318475abee0c7f587e9d` |
+| [alignments-rnaseq-zoomedin-selection.png](https://igv.org/doc/desktop/UserGuide/img/alignments-rnaseq-zoomedin-selection.png) | 2394×584 | `725f32f32ce3236177a5f9e5966772dcefb7c159a0e94bdb9350c235fa36e2cb` |
+
+依官方文件解釋 coverage、junction 弧線、split-read 支持數與開啟 Sashimi Plot 的操作。直接檢視原圖確認組織名稱、SLC25A3 標示與不同縱軸上限；不以圖中差異推論臨床效應或正式差異剪接結果。原頁其餘回查原則保留於逐頁詳解。
+
+第三方圖片權利屬原權利人，本專案不宣告為自製圖或另授權；[官方文件原始碼](https://github.com/igvteam/igv-docs) 未提供可直接確認的獨立圖片授權，不將 IGV 軟體的 MIT 授權自動延伸為所有文件圖片的授權聲明。此處限於具來源標示的教學解讀引用。
+
 ## 第 55 頁：四工具比較
 
 | 來源 | 可支持的內容 | 教學判斷與限制 |

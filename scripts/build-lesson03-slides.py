@@ -73,6 +73,12 @@ def transcript(rows):
     return '<div class="transcripts" role="img" aria-label="外顯子組合概念示意，非按實際座標繪製">' + ''.join('<div class="transcript"><b>' + label + '</b><div class="exons">' + ''.join(f'<span class="exon {"skip" if x == "—" else ""}">{x}</span>' for x in exons) + '</div></div>' for label, exons in rows) + '</div>'
 
 
+def igv_example(name, alt):
+    """Embed unmodified official screenshots; link to the local original for zooming."""
+    data = b64encode((ROOT / 'figures/lesson-03-igv' / name).read_bytes()).decode()
+    return f'<a href="../../figures/lesson-03-igv/{name}" target="_blank" rel="noopener noreferrer" title="另開分頁查看原尺寸"><img src="data:image/png;base64,{data}" alt="{escape(alt)}"></a>'
+
+
 add('第三堂 · 轉錄體', 'Bulk RNA-seq<br>從檢體到差異表現與可變剪接',
     '<p class="subtitle">不只看哪些基因變多，也看 RNA 形式如何改變</p>'
     '<p class="hero">研究問題 → 可比較的數字 → 可查證的結論</p>'
@@ -335,8 +341,30 @@ add('可變剪接 · 工具', '先選問題，再選事件、intron cluster 或 
     ]) + take('每位病人保留獨立證據；不要合併兩組 BAM 後只比較兩個大檔案。'), '11.6 11.7', refs('rmats', 'leaf', 'dexseq'), 'compact')
 
 add('可變剪接 · 局部回查', 'Sashimi plot 是接合證據，不是完整 RNA 照片',
-    cards(('先核對座標與尺度', 'Genome／annotation／股向一致嗎？<br>覆蓋縱軸是否各自縮放？<br>弧線數值是否已校正深度？'), ('再核對病人與路徑', 'Inclusion、skipping 是否都有可靠支持？<br>多位病人方向是否一致？<br>合併圖是否被單一高深度樣本主導？'))
-    + take('弧線表示局部 junction，不能保證遠端兩個事件位於同一條 RNA。'), '11.8', refs('igv'))
+    '<div class="sashimi-grid"><figure>'
+    + igv_example('SL_Sashimi1.png', 'IGV 官方 SLC25A3 Sashimi 範例：heart、kidney、liver 的 coverage、junction 弧線與下方轉錄本註解')
+    + '<figcaption>官方範例：紅 heart／藍 kidney／綠 liver；點圖看原尺寸。</figcaption></figure><article><h3>先看 split read 如何跨接合點</h3>'
+    + igv_example('alignments-rnaseq-zoomedin-selection.png', 'IGV 官方另一張 split-read 範例：紅色高亮的同一條 read 分成兩段，中間由細藍線連接')
+    + '<p class="split-caption">另一官方範例：紅色兩段屬同一 read；<br>細藍線跨過未比對的 intron 區段。</p>'
+    + '<p><b>① 山峰＝coverage</b><br>每個位置有多少 reads 覆蓋。</p>'
+    + '<p><b>② 弧線＝junction</b><br>數字如 2890 是支持 reads 數，非 PSI。</p>'
+    + '<p><b>③ 下方藍色模型＝註解</b><br>不是本次證明的完整 RNA；<br>左圖三軌縱軸不同，勿直接比較峰高。</p></article></div>'
+    + take('弧線只支持局部接合；比較樣本前，須核對深度、尺度與生物重複。'),
+    '11.8', refs('igv') + ' · 圖片：IGV team 官方文件；原圖等比例縮放，非本課執行結果', 'sashimi-slide',
+    '''### 官方範例圖怎麼讀
+
+左圖是 IGV 文件的 SLC25A3 範例，三種顏色標示 heart、kidney、liver 軌道，不是在此表示正反股。山峰顯示 coverage，弧線連接 splice junction，數字是跨該接合點的 reads 數；例如 2890 不是 PSI，也不是 2890 位病人。下方藍色模型是參考註解，不能因此認定樣本具有該完整轉錄本。
+
+三軌的 coverage 上限分別為 11850、5842、5313，因此相似峰高不等於相似讀取深度。原始 junction 計數也受總深度影響，不能直接當成剪接比例差異或統計顯著性。須回查各病人的支持、比較尺度與正式事件分析；局部 junction 無法把遠端事件串成唯一完整 RNA。
+
+右上圖是另一個獨立的官方 split-read 範例，不能與左圖當成相同座標。紅色只是選取高亮：同一 read 的兩個比對區塊由細藍線連接，中間是相對參考基因組跳過的區段；不能把細線解讀成 intron 也被定序覆蓋。
+
+### 在 IGV 中開啟
+
+先將主視窗移至涵蓋目標區域的範圍，在 RNA-seq alignment 軌道按右鍵選 Sashimi Plot，再依提示選註解與樣本軌道。比較前核對 genome／annotation／股向、coverage 尺度及 junction 顯示門檻；未顯示的弧線不必然等於沒有支持 reads。
+
+本頁是官方圖片的教學引用，非本課重新執行 IGV、亦非院內病人分析。原圖未裁切或改動數值，可點圖另開原尺寸；圖片來源及查核紀錄見 [第三堂來源記錄](../../sources/lesson-03-slides-sources.md)。
+''')
 
 add('可變剪接 · 驗證', 'RNA 結構改變，不等於蛋白質功能已改變',
     flow('回查比對與事件', '獨立樣本／接合驗證', '編碼／NMD 假說', '蛋白與功能證據')
@@ -403,6 +431,7 @@ CSS = r'''
 table{width:100%;border-collapse:collapse;font-size:24px;line-height:1.42}th{background:var(--ink);color:white;text-align:left;padding:12px 15px}td{padding:13px 15px;border-bottom:1px solid #bdcfca}tr:nth-child(even){background:#edf2ef}.compact table,.tools table{font-size:23px}.compact td,.tools td{padding:11px 14px}.compact .takeaway,.tools .takeaway{font-size:24px;margin-top:20px}.equation{padding:20px;background:#e1edeb;font-size:32px;color:var(--teal);text-align:center;margin:16px 0 24px}pre{background:#193a40;color:#f3f7f4;border-radius:6px;padding:18px 22px;white-space:pre-wrap;overflow-wrap:anywhere;font:21px/1.5 Menlo,Consolas,monospace;margin:20px 0}code{font-family:Menlo,Consolas,monospace}.code-slide pre{font-size:22px}.small{font-size:22px}.intro{font-size:25px}.resource{line-height:1.8}
 .transcripts{background:#edf2ef;padding:18px 24px;margin:15px 0 24px}.transcript{display:flex;align-items:center;gap:30px;margin:15px 0}.transcript>b{width:210px;font-size:25px}.exons{display:flex;align-items:center;gap:25px;flex:1;background:linear-gradient(transparent 48%,#8da6a0 48%,#8da6a0 52%,transparent 52%)}.exon{flex:1;padding:13px 10px;text-align:center;background:#087c83;color:white;font-size:26px;border-radius:4px}.exon.skip{background:#edf2ef;color:#526b67;border:2px dashed #8da6a0}
 .plot{display:grid;grid-template-columns:770px 1fr;gap:26px;align-items:center}.plot img{width:770px;height:465px;object-fit:contain;background:white}.plot article p{font-size:23px;line-height:1.48}.plot h3{font-size:25px}.plot .label{font-size:17px;border-top:1px solid #adc2bd;padding-top:12px}.figure-slide h2{margin-bottom:16px}
+.sashimi-slide h2{font-size:36px;margin-bottom:16px}.sashimi-grid{display:grid;grid-template-columns:704px 1fr;gap:24px;align-items:start}.sashimi-grid figure{margin:0}.sashimi-grid a{display:block}.sashimi-grid img{display:block;width:100%;height:auto}.sashimi-grid figcaption{font-size:18px;line-height:1.5;margin-top:8px}.sashimi-grid h3{font-size:24px;margin:0 0 10px}.sashimi-grid article p{font-size:22px;line-height:1.4;margin:12px 0 0}.sashimi-grid article .split-caption{font-size:20px;margin-top:8px}.sashimi-slide .takeaway{font-size:23px;margin-top:14px;padding:10px 16px}
 footer{position:absolute;left:56px;right:56px;bottom:14px;border-top:1px solid #b6cbc7;padding-top:10px;display:flex;gap:20px;font-size:15px;line-height:1.4;color:#415b62}.source{flex:1}.page{white-space:nowrap;font-weight:800;color:var(--teal)}.cover{background:#193d42;color:#f9f7ef}.cover .eyebrow{color:#a8d6c6}.cover h2{font-size:54px;line-height:1.25;margin:45px 0 30px}.cover .subtitle{font-size:30px;color:#cbe3d5}.hero{font-size:31px;color:#f0d3ae;border-top:2px solid #d6ac75;padding-top:25px;margin-top:32px}.speaker{position:absolute;bottom:85px;font-size:23px}.cover footer,.cover .page{color:#c9dcd4}.workbench h2{font-size:40px}.workbench .cards{margin:12px 0}.workbench .cards article{padding:18px 22px}.workbench .takeaway{font-size:23px;margin-top:18px}
 nav{position:fixed;bottom:0;left:0;right:0;background:#0e262b;color:white;height:54px;display:flex;align-items:center;justify-content:center;gap:12px;font-size:14px}button{font:inherit;padding:8px 15px;border:1px solid #8fb1ac;background:#23454b;color:white;border-radius:6px;cursor:pointer}button:disabled{opacity:.4}button:focus-visible,a:focus-visible{outline:3px solid #dc843d;outline-offset:3px}#status{min-width:75px;text-align:center}dialog{width:min(1050px,94vw);max-height:87vh;background:var(--paper);color:var(--ink);border:0;border-radius:10px;padding:30px 38px}dialog::backdrop{background:#10282bcf}.menuhead{display:flex;justify-content:space-between;align-items:center;gap:20px}#toc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}#toc button{background:#e2ece8;color:var(--ink);text-align:left;font-size:17px}#toc button[aria-current=true]{background:var(--ink);color:white}#explain h2{font-size:30px;margin:24px 0}#explain h3,#explain h4{font-size:25px;margin:26px 0 12px}#explain p,#explain li{font-size:22px;line-height:1.8}#explain table{font-size:19px;display:block;overflow:auto}#explain pre{font-size:17px}#explain img{max-width:100%}.help{font-size:17px}body.nojs #stage{position:static;transform:none;width:100%;height:auto}body.nojs .slide{display:block;margin-bottom:20px}body.nojs nav{display:none}noscript{display:block;padding:25px;color:white}
 @media print{@page{size:1280px 720px;margin:0}body{background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact}#stage{position:static;transform:none;width:1280px;height:auto}.slide{display:block!important;break-after:page}.slide:last-child{break-after:auto}nav,dialog,noscript{display:none!important}}
