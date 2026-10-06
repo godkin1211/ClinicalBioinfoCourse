@@ -65,6 +65,7 @@ fs.mkdirSync(out, {recursive:true});
     await page.locator('#fullscreen').click();assert.ok(await page.evaluate(()=>document.fullscreenElement));
     await page.evaluate(()=>document.exitFullscreen());
     await page.goto(url+'#slide-55');assert.equal(await page.locator('#status').textContent(),'55 / 56');
+    assert.equal((await page.locator('.active footer').textContent()).trim(),'55 / 56');
     const toolLinks=page.locator('.active table td:first-child a');
     const toolUrls=['https://github.com/developerpiru/BEAVR','https://github.com/knowmics-lab/RNAdetector','https://ranaseq.eu/','https://bioinformatics.sdstate.edu/idep/'];
     assert.equal(await toolLinks.count(),toolUrls.length);
