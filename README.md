@@ -20,6 +20,14 @@
 
 完整的課程定位、共同教學原則與課程間銜接方式見 [課程總綱](curriculum/program-overview.md)。
 
+## 2026-10-24 LDTs 一小時專題
+
+另行整合前三堂為「LDTs 的生物資訊：從檢體訊號到可信的檢測結果」，原九堂安排不變。以 FFPE 腫瘤案例串起平台、檔案、QC、分析證據及驗證追溯，保留 RNA 與可變剪接內容，適合無程式背景的臨床與實驗室人員。
+
+- [HTML 投影片](output/slides/ldt-20261024-bioinformatics.html)：30 頁主課程＋4 頁備查，含 8 張原創原理圖與官方 IGV 範例，離線可用。
+- [PDF 投影片](output/pdf/ldt-20261024-bioinformatics.pdf)、[逐頁詳解](output/slides/ldt-20261024-explanations.html)。
+- [濃縮架構](lessons/ldt-20261024-outline.md)、[播放與重建](output/slides/ldt-20261024-README.md)、[來源及查核紀錄](sources/ldt-20261024-sources.md)。
+
 ## 可直接使用的示範
 
 ### 第一堂：基因體資料分析
