@@ -188,15 +188,8 @@ def make_figures():
 def make_slides():
     add('2026.10.24 · 生物資訊入門', 'LDTs 的生物資訊<br>從檢體訊號到可信的檢測結果',
         '<p class="subtitle">看懂資料、品質與證據，不必先會寫程式</p><p class="hero">檢測範圍 → 資料品質 → 分析證據 → 驗證與追溯</p><p class="speaker">奇美醫院精準醫學核心實驗室組長邱家軍</p>', '',
-        '這堂課整合原系列前三堂內容，以基因體與轉錄體的檢測情境說明生物資訊。LDTs 是 laboratory developed tests，中文為實驗室開發檢測；它不是某一種定序技術，也不是單一軟體。\n\n本課讓沒有程式經驗的學員能提出正確問題：測了什麼、資料夠不夠、分析如何得到答案、答案的限制在哪裡。主課程 30 頁，另有 4 頁備查。示意數字不代表臨床放行規則，也不代表本課完成了檢測驗證。',
+        '這堂課整合原系列前三堂內容，以基因體與轉錄體的檢測情境說明生物資訊。LDTs 是 laboratory developed tests，中文為實驗室開發檢測；它不是某一種定序技術，也不是單一軟體。\n\n本課讓沒有程式經驗的學員能提出正確問題：測了什麼、資料夠不夠、分析如何得到答案、答案的限制在哪裡。主課程 28 頁，另有 4 頁備查。示意數字不代表臨床放行規則，也不代表本課完成了檢測驗證。',
         '整合 Lesson 01–03；新增 LDT 品質主線', 'jct', 'cover')
-
-    add('01 · 先從問題出發', '兩份報告都寫 5%：你會一樣相信嗎？',
-        cards(('同樣的數字', '兩個候選位點都有 400 條納入計算的 reads，其中 20 條支持 ALT，因此都是 5% VAF。'),
-              ('不同的證據', 'A 的支持分布較分散；B 的支持都來自同一方向、集中在讀段末端。還能直接當作同等可信嗎？'))
-        +p('Read 是一次讀出的短序列；ALT 是相對參考序列的替代形式。VAF（變異等位基因頻率）是支持 ALT 的讀段比例，不是「真實的機率」。'),
-        '生物資訊的工作不是把數字算出來，而是保留「為什麼可以相信它」的證據。',
-        '這是延伸第二堂的人工案例，不是兩位真實病人的結果。400 條 reads 的分母必須先知道如何篩選，是否已處理重複、低品質與重疊配對。20/400 是一個觀察比例；光靠比例無法判斷真偽、來源或臨床重要性。\n\nA 也不能直接宣布通過；較好的分布只是其中一項支持。B 則需要排查方向偏差、末端品質、比對、文庫設計與原始分子是否獨立。課程最後會用同一案例練習如何交付有依據的結論。', 'L02：案例與讀段證據', 'mutect')
 
     add('01 · 生物資訊的角色', '從「測得到」到「有幫助」，中間有三道問題',
         flow('分析效能<br>測量是否可靠？','臨床效度<br>與疾病是否相關？','臨床效益<br>能否改善決策？')
@@ -204,15 +197,6 @@ def make_slides():
                ('技術可靠仍不等於有臨床效益', '找到變異後，仍需疾病背景、適應症與證據評估；軟體 PASS 不代表一定可用藥。')),
         '本課聚焦分析證據與品質；不以演算法分數取代臨床判斷。',
         '分析效能關心測量是否正確、可重複，以及在什麼條件下會失敗。臨床效度關心檢測結果與目標疾病或狀態的關聯。臨床效益則關心使用檢測後，是否能帶來有意義的決策或健康結果改善。這三者不能互換。\n\n例如準確偵測到一個罕見序列差異，只完成了測量層級的一部分；若沒有足夠疾病或治療證據，不能自動形成用藥建議。驗證生物資訊流程是必要的一環，但不是完整臨床效益研究的替代品。', 'L01：平台限制；L02：技術可信度；L03：推論界線', 'roy jennings')
-
-    add('01 · 臺灣 LDTs 脈絡', '實驗室認證、施行計畫與流程驗證，不是同一件事',
-        table(['層次','關心什麼','生物資訊如何配合'],[
-            ['實驗室資格','執行單位具備適用的品質與能力條件','人員、文件、設備／系統及紀錄管理'],
-            ['檢測施行計畫','醫療機構申請的用途、項目與施行內容','說明方法、分析範圍、限制與合作分工'],
-            ['分析方法的驗證','這套流程在聲稱條件下能否可靠產生結果','實測性能、QC、異常處理與變更評估'],
-        ])+p('LDTs＝實驗室開發檢測。醫策會提供審查資訊；衛福部 2026/03 更新申請須知與認證資格。'),
-        '技術建議不等於臺灣法定條文；本課不是申請核准或訓練時數採認的證明。',
-        '醫策會簡介指出，自行開發的檢測已納入臺灣特管辦法的管理脈絡。衛福部 115 年 3 月 13 日的申請資訊說明，醫療機構施行 LDTs 應擬定施行計畫並經核准；115 年 3 月 19 日另有實驗室認證資格公告。這些行政層次不能以「買了軟體」或「實驗室有某一認證」概括取代。\n\n本頁只用於定位生物資訊工作，不逐條解釋個案適用法規。國際 AMP/CAP 文件是技術建議，不直接當作臺灣法規。資料查核日為 2026-10-15；實際申請、變更與人員訓練採認仍應依主管機關最新公告及機構核准內容辦理。', '新增：臺灣官方制度脈絡', 'apply lab', 'compact')
 
     add('02 · 先寫清楚檢測規格', '選軟體之前，先定義「我們承諾測到什麼」',
         table(['必須定義','人工範例：FFPE 腫瘤 DNA panel'],[
@@ -392,7 +376,7 @@ def make_slides():
         '委外與商用軟體可以分工，不會自動取代檢測單位的品質與審核責任。',
         '資料追溯是能回答誰、何時、用什麼資料與版本、作出什麼改動，以及由誰審核。備份不只要存在，也要確認能復原。權限應限於工作必要範圍；可識別基因資料需要依機構及適用規範管理。\n\n衛福部另有 LDTs 相關儀器及資通系統使用切結書資訊，顯示工具與資料安全也是制度中的重要面向。本頁不逐條解釋設備或服務資格；實際使用前需由負責單位核對。AI 產生的文字或程式不能當作已執行證據，資料外傳、變更及結果核發仍需人工審核。', 'L01–03：紀錄與輸出；新增資安／責任界線', 'security roy')
 
-    add('07 · 回到最初案例', '看到 5% VAF，先走完五個問題再下結論',
+    add('07 · 案例綜合練習', '看到 5% VAF，先走完五個問題再下結論',
         table(['問題','本案例應回查的證據'],[
             ['1. 在聲稱範圍內嗎？','檢體、區域、事件類型、濃度是否落在驗證範圍'],
             ['2. 資料身分正確嗎？','檢體與檔案 ID、tumor–normal、參考與目標版本'],
@@ -453,7 +437,7 @@ CSS = BASE['CSS'] + r'''
 def main():
     make_figures()
     make_slides()
-    assert len(SLIDES) == 34
+    assert len(SLIDES) == 32
     pages, readings = [], []
     for i, s in enumerate(SLIDES, 1):
         source = refs(s['sources']) or '整合前三堂教材；完整依據與前提見逐頁詳解'
@@ -461,12 +445,12 @@ def main():
         notes = subprocess.run(['pandoc','--from=gfm','--to=html5','--wrap=none',f'--id-prefix=ldt-{i}-'],input=md,text=True,capture_output=True,check=True).stdout
         notes += f'<p class="help">{source}</p>'
         title = escape(s['title'].replace('<br>', ' '))
-        kind = s['kind'] + (' appendix' if i > 30 else '')
+        kind = s['kind'] + (' appendix' if i > 28 else '')
         take = f'<p class="takeaway">{s["takeaway"]}</p>' if s['takeaway'] else ''
-        pages.append(f'<section class="slide {kind}" id="slide-{i}" data-title="{title}" aria-label="第 {i} 頁：{title}"><header class="eyebrow">LDTs / {s["topic"]}</header><h2>{s["title"]}</h2><div class="content">{s["body"]}{take}</div><template>{notes}</template><footer><span class="source">{source}</span><span class="page">{i:02d} / 34</span></footer></section>')
+        pages.append(f'<section class="slide {kind}" id="slide-{i}" data-title="{title}" aria-label="第 {i} 頁：{title}"><header class="eyebrow">LDTs / {s["topic"]}</header><h2>{s["title"]}</h2><div class="content">{s["body"]}{take}</div><template>{notes}</template><footer><span class="source">{source}</span><span class="page">{i:02d} / {len(SLIDES)}</span></footer></section>')
         readings.append(f'<article id="page-{i}"><h2>{i:02d} · {title}</h2>{notes}<p><a href="ldt-20261024-bioinformatics.html#slide-{i}">回到投影片</a></p></article>')
     head = '<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="author" content="奇美醫院精準醫學核心實驗室組長邱家軍">'
-    controls = '''<nav aria-label="投影片導覽"><button id="prev">← 上一張</button><span id="status" aria-live="polite"></span><button id="next">下一張 →</button><button id="overview">目錄 O</button><button id="explanation">逐頁詳解 E</button><button id="fullscreen">全螢幕 F</button><button id="print">列印全部</button></nav><dialog id="menu" aria-labelledby="menu-title"><div class="menuhead"><h3 id="menu-title">LDTs 生物資訊 · 30 頁主課程＋4 頁備查</h3><button id="close">關閉</button></div><p class="help">方向鍵／空白鍵翻頁 · E 詳解 · Esc 關閉 · F 全螢幕<br>正文及圖片可離線播放；外部來源需連網。</p><div id="toc"></div></dialog><dialog id="explain" aria-labelledby="explain-title"><div class="menuhead"><a id="reading-link" href="ldt-20261024-explanations.html" target="_blank" rel="noopener">閱讀全部詳解 ↗</a><button id="explain-close">關閉 Esc</button></div><h2 id="explain-title"></h2><div id="explain-body"></div></dialog>'''
+    controls = '''<nav aria-label="投影片導覽"><button id="prev">← 上一張</button><span id="status" aria-live="polite"></span><button id="next">下一張 →</button><button id="overview">目錄 O</button><button id="explanation">逐頁詳解 E</button><button id="fullscreen">全螢幕 F</button><button id="print">列印全部</button></nav><dialog id="menu" aria-labelledby="menu-title"><div class="menuhead"><h3 id="menu-title">LDTs 生物資訊 · 28 頁主課程＋4 頁備查</h3><button id="close">關閉</button></div><p class="help">方向鍵／空白鍵翻頁 · E 詳解 · Esc 關閉 · F 全螢幕<br>正文及圖片可離線播放；外部來源需連網。</p><div id="toc"></div></dialog><dialog id="explain" aria-labelledby="explain-title"><div class="menuhead"><a id="reading-link" href="ldt-20261024-explanations.html" target="_blank" rel="noopener">閱讀全部詳解 ↗</a><button id="explain-close">關閉 Esc</button></div><h2 id="explain-title"></h2><div id="explain-body"></div></dialog>'''
     js = BASE['JS'].replace('lesson-03-explanations.html','ldt-20261024-explanations.html')
     html = head+'<title>LDTs 生物資訊入門｜2026-10-24</title><style>'+CSS+'</style></head><body class="nojs"><noscript>JavaScript 關閉，以下顯示全部投影片。</noscript><main id="stage">'+''.join(pages)+'</main>'+controls+'<script>'+js+'</script></body></html>'
     OUT.mkdir(parents=True,exist_ok=True)

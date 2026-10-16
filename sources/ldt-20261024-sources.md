@@ -56,4 +56,4 @@
 | lod.svg | 五濃度各 20 次，檢出數 4、14、19、20、20；全部為合成資料。19/20 不單獨證明可靠的 LoD。 |
 | versions.svg | 版本比較與審核的概念圖，未執行臨床回歸測試。 |
 
-第 22 頁重用既有 `figures/lesson-03-igv/SL_Sashimi1.png`，出自 [IGV 官方原圖](https://igv.org/doc/desktop/UserGuide/img/SL_Sashimi1.png)。依原比例縮放，未修改數據。為官方文件之教學引用，並非本課實測結果；不宣稱該圖片採用軟體原始碼的授權。原有出處與權利說明見第三堂投影片來源紀錄。
+第 20 頁重用既有 `figures/lesson-03-igv/SL_Sashimi1.png`，出自 [IGV 官方原圖](https://igv.org/doc/desktop/UserGuide/img/SL_Sashimi1.png)。依原比例縮放，未修改數據。為官方文件之教學引用，並非本課實測結果；不宣稱該圖片採用軟體原始碼的授權。原有出處與權利說明見第三堂投影片來源紀錄。
