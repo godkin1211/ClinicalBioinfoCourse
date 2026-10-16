@@ -188,7 +188,7 @@ def make_figures():
 def make_slides():
     add('2026.10.24 · 生物資訊入門', 'LDTs 的生物資訊<br>從檢體訊號到可信的檢測結果',
         '<p class="subtitle">看懂資料、品質與證據，不必先會寫程式</p><p class="hero">檢測範圍 → 資料品質 → 分析證據 → 驗證與追溯</p><p class="speaker">奇美醫院精準醫學核心實驗室組長邱家軍</p>', '',
-        '這堂課整合原系列前三堂內容，以基因體與轉錄體的檢測情境說明生物資訊。LDTs 是 laboratory developed tests，中文為實驗室開發檢測；它不是某一種定序技術，也不是單一軟體。\n\n本課讓沒有程式經驗的學員能提出正確問題：測了什麼、資料夠不夠、分析如何得到答案、答案的限制在哪裡。主課程 28 頁，另有 4 頁備查。示意數字不代表臨床放行規則，也不代表本課完成了檢測驗證。',
+        '這堂課整合原系列前三堂內容，以基因體與轉錄體的檢測情境說明生物資訊。LDTs 是 laboratory developed tests，中文為實驗室開發檢測；它不是某一種定序技術，也不是單一軟體。\n\n本課讓沒有程式經驗的學員能提出正確問題：測了什麼、資料夠不夠、分析如何得到答案、答案的限制在哪裡。主課程 28 頁，另有 1 頁重點回顧與 4 頁備查。示意數字不代表臨床放行規則，也不代表本課完成了檢測驗證。',
         '整合 Lesson 01–03；新增 LDT 品質主線', 'jct', 'cover')
 
     add('01 · 生物資訊的角色', '從「測得到」到「有幫助」，中間有三道問題',
@@ -392,7 +392,7 @@ def make_slides():
                ('性能與責任', '④ 這種檢體／事件的能力是否驗證？<br>⑤ 能否重建版本、參數與人工改動？<br>⑥ 限制、異常與核發責任是否清楚？'))
         +p('討論：若平均深度、FastQC 與軟體 FILTER 都通過，你還會要求看哪一份證據，才願意接受「未檢出」？'),
         '生物資訊不是報告前的黑盒子，而是檢測品質的一部分。',
-        '可用前頁案例回答討論題：目標區域的有效覆蓋、獨立分子、文庫與檢體背景、可報告範圍及驗證限制，都是總合格率無法取代的資訊。沒有單一指標能保證所有事件類型。\n\n這堂課的目的不是讓學員記住所有軟體名稱，而是能與實驗室、生物資訊及臨床團隊對話。後四頁是問題延伸與參考資料，不需要逐頁講完；完整指令安裝、統計推導及軟體操作仍可回到原系列前三堂教材閱讀。', '整合總結')
+        '可用前頁案例回答討論題：目標區域的有效覆蓋、獨立分子、文庫與檢體背景、可報告範圍及驗證限制，都是總合格率無法取代的資訊。沒有單一指標能保證所有事件類型。\n\n這堂課的目的不是讓學員記住所有軟體名稱，而是能與實驗室、生物資訊及臨床團隊對話。後續備查頁可依提問選讀，最後再用 Take-home messages 收束；完整指令安裝、統計推導及軟體操作仍可回到原系列前三堂教材閱讀。', '整合總結')
 
     add('備查 A · Array', 'BAF 與 LRR：比例與總訊號要一起看',
         table(['觀察量','白話意思','判讀限制'],[
@@ -421,6 +421,15 @@ def make_slides():
         '不能將單一基因、單一分數或其他廠牌門檻，直接搬成這套 LDT 的聲稱。',
         'TMB 的分母是實際可評估的區域，不是隨意使用 panel 標示大小；不同事件納入規則也會改變值。MSI 是重複長度不穩定的分析結果，需以適當標記與模型評估，不等同一張一般 SNV 清單。\n\nHRD 是修復功能相關概念；某些測試量測歷史性基因體疤痕，某些看基因事件，某些評估功能，不能互相視為完全等價。實際臨床意義仍需結合特定檢測、癌別與適應症。本頁僅比較訊號與分析邊界，不提供用藥閾值。', 'L02：TMB／MSI／HRD 三頁及來源', '', 'compact')
 
+    add('課程重點回顧', 'Take-home messages｜把數據變成可信的結果',
+        cards(('① 先定義範圍，再選平台', '先說清楚檢體、目標區域與事件類型；做了 NGS，不代表所有變異都能可靠偵測。'),
+              ('② 品質重於數量', '深度與比對率只是起點；還要確認獨立分子、局部覆蓋，以及方向與末端偏差。'),
+              ('③ 結論不能超過證據', 'DNA 變異、RNA 表現與剪接需要不同證據；「未檢出」不等於品質不足的「無法判定」。'),
+              ('④ 驗證與追溯不可省略', '檢測能力需經驗證；保留版本、參數、QC 與審核紀錄，更新流程後再確認性能。')),
+        '可信的結果＝明確的檢測範圍＋足夠的證據＋經驗證、可追溯的流程。',
+        '第一個重點是把檢測能力說清楚：平台、檢體與可報告範圍必須符合要回答的問題，不能因為軟體有輸出就直接增加檢測聲稱。第二個重點是分開資料數量與證據品質；同樣的平均深度或 VAF，可能具有不同的分子獨立性、覆蓋缺口與偏差。\n\n第三個重點是限制推論。DNA 變異、RNA 表現及局部剪接訊號不是同一層次的資訊；品質不足時應依規則說明無法判定，而非直接稱陰性。第四個重點是把分析當成受控流程：在聲稱條件下建立性能證據，保留資料與版本，記錄人工審核，變更後依風險確認性能。這四點是本課既有內容的收束，不新增通用門檻或臨床建議。',
+        '整合本課：檢測範圍、QC、DNA／RNA 證據、驗證與追溯', 'roy jennings', 'summary')
+
     links = ''.join(f'<li><a href="{SOURCES[k][1]}" target="_blank" rel="noopener noreferrer">{SOURCES[k][0]}</a></li>' for k in ['jct','apply','lab','roy','jennings','giab'])
     add('備查 D · 延伸閱讀', '從簡報回到原始規範、方法與完整教材',
         '<div class="reading-columns"><div><h3>官方資訊與技術建議</h3><ul>'+links+'</ul></div><div><h3>本專案的完整解釋</h3><p><a href="ldt-20261024-explanations.html">本堂逐頁詳解</a><br><a href="lesson-01-genomics.html">第一堂：Array／WES／WGS</a><br><a href="lesson-02-somatic.html">第二堂：癌症體細胞分析</a><br><a href="lesson-03-bulk-rnaseq.html">第三堂：RNA-seq 與剪接</a></p><p><a href="../../sources/ldt-20261024-sources.md">來源、查核日期與教學範圍</a></p></div></div>',
@@ -430,6 +439,7 @@ def make_slides():
 
 CSS = BASE['CSS'] + r'''
 .cover footer a{color:#b4dcd6}
+.summary .cards{grid-template-columns:repeat(2,1fr);gap:20px}.summary .cards article{padding:18px 22px}.summary .cards h3{font-size:26px;margin-bottom:10px}.summary .cards p{font-size:24px;line-height:1.5}
 .slide{padding-top:32px}.eyebrow{margin-bottom:14px}h2{font-size:37px;margin-bottom:20px}.content{height:auto}.cards{margin:12px 0;gap:22px}.cards article{padding:20px}.cards h3{font-size:27px;margin-bottom:13px}.cards p{font-size:25px;line-height:1.55}p{font-size:25px;line-height:1.55}.takeaway{font-size:24px;margin-top:22px;padding:13px 18px}.compact td{padding:12px 14px}.compact table{font-size:23px}.compact p{font-size:24px}.flow{margin:18px 0 23px}.flow div{font-size:26px;line-height:1.5;padding:20px 14px}.ldt-figure{display:grid;grid-template-columns:700px 1fr;gap:25px;align-items:start}.ldt-figure img{width:700px;height:380px;object-fit:contain;background:#fffdf8}.ldt-figure .igv-image{height:420px}.ldt-figure h3{font-size:27px;margin:6px 0 14px}.ldt-figure p{font-size:23px;line-height:1.5;margin:13px 0}.fig .takeaway{font-size:24px;margin-top:18px}.cover .subtitle{font-size:28px}.cover .hero{font-size:28px;margin-top:26px}.cover h2{font-size:52px;margin:30px 0}.cover .speaker{font-size:25px;bottom:90px}.reading-columns{display:grid;grid-template-columns:1.1fr 1fr;gap:34px}.reading-columns h3{font-size:27px}.reading-columns ul{font-size:23px;line-height:1.8;padding-left:25px}.reading-columns p{font-size:24px;line-height:1.9}footer{font-size:14px}.appendix .eyebrow{color:#a94b27}
 '''
 
@@ -437,7 +447,7 @@ CSS = BASE['CSS'] + r'''
 def main():
     make_figures()
     make_slides()
-    assert len(SLIDES) == 32
+    assert len(SLIDES) == 33
     pages, readings = [], []
     for i, s in enumerate(SLIDES, 1):
         source = refs(s['sources']) or '整合前三堂教材；完整依據與前提見逐頁詳解'
@@ -445,12 +455,12 @@ def main():
         notes = subprocess.run(['pandoc','--from=gfm','--to=html5','--wrap=none',f'--id-prefix=ldt-{i}-'],input=md,text=True,capture_output=True,check=True).stdout
         notes += f'<p class="help">{source}</p>'
         title = escape(s['title'].replace('<br>', ' '))
-        kind = s['kind'] + (' appendix' if i > 28 else '')
+        kind = s['kind'] + (' appendix' if s['topic'].startswith('備查') else '')
         take = f'<p class="takeaway">{s["takeaway"]}</p>' if s['takeaway'] else ''
         pages.append(f'<section class="slide {kind}" id="slide-{i}" data-title="{title}" aria-label="第 {i} 頁：{title}"><header class="eyebrow">LDTs / {s["topic"]}</header><h2>{s["title"]}</h2><div class="content">{s["body"]}{take}</div><template>{notes}</template><footer><span class="source">{source}</span><span class="page">{i:02d} / {len(SLIDES)}</span></footer></section>')
         readings.append(f'<article id="page-{i}"><h2>{i:02d} · {title}</h2>{notes}<p><a href="ldt-20261024-bioinformatics.html#slide-{i}">回到投影片</a></p></article>')
     head = '<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="author" content="奇美醫院精準醫學核心實驗室組長邱家軍">'
-    controls = '''<nav aria-label="投影片導覽"><button id="prev">← 上一張</button><span id="status" aria-live="polite"></span><button id="next">下一張 →</button><button id="overview">目錄 O</button><button id="explanation">逐頁詳解 E</button><button id="fullscreen">全螢幕 F</button><button id="print">列印全部</button></nav><dialog id="menu" aria-labelledby="menu-title"><div class="menuhead"><h3 id="menu-title">LDTs 生物資訊 · 28 頁主課程＋4 頁備查</h3><button id="close">關閉</button></div><p class="help">方向鍵／空白鍵翻頁 · E 詳解 · Esc 關閉 · F 全螢幕<br>正文及圖片可離線播放；外部來源需連網。</p><div id="toc"></div></dialog><dialog id="explain" aria-labelledby="explain-title"><div class="menuhead"><a id="reading-link" href="ldt-20261024-explanations.html" target="_blank" rel="noopener">閱讀全部詳解 ↗</a><button id="explain-close">關閉 Esc</button></div><h2 id="explain-title"></h2><div id="explain-body"></div></dialog>'''
+    controls = '''<nav aria-label="投影片導覽"><button id="prev">← 上一張</button><span id="status" aria-live="polite"></span><button id="next">下一張 →</button><button id="overview">目錄 O</button><button id="explanation">逐頁詳解 E</button><button id="fullscreen">全螢幕 F</button><button id="print">列印全部</button></nav><dialog id="menu" aria-labelledby="menu-title"><div class="menuhead"><h3 id="menu-title">LDTs 生物資訊 · 28 頁主課程＋1 頁重點回顧＋4 頁備查</h3><button id="close">關閉</button></div><p class="help">方向鍵／空白鍵翻頁 · E 詳解 · Esc 關閉 · F 全螢幕<br>正文及圖片可離線播放；外部來源需連網。</p><div id="toc"></div></dialog><dialog id="explain" aria-labelledby="explain-title"><div class="menuhead"><a id="reading-link" href="ldt-20261024-explanations.html" target="_blank" rel="noopener">閱讀全部詳解 ↗</a><button id="explain-close">關閉 Esc</button></div><h2 id="explain-title"></h2><div id="explain-body"></div></dialog>'''
     js = BASE['JS'].replace('lesson-03-explanations.html','ldt-20261024-explanations.html')
     html = head+'<title>LDTs 生物資訊入門｜2026-10-24</title><style>'+CSS+'</style></head><body class="nojs"><noscript>JavaScript 關閉，以下顯示全部投影片。</noscript><main id="stage">'+''.join(pages)+'</main>'+controls+'<script>'+js+'</script></body></html>'
     OUT.mkdir(parents=True,exist_ok=True)

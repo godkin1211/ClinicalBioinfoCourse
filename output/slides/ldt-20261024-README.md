@@ -1,8 +1,8 @@
 # 2026-10-24 LDTs 生物資訊專題
 
-- [HTML 投影片](ldt-20261024-bioinformatics.html)：32 頁，主課程 28 頁＋備查 4 頁，16:9。
+- [HTML 投影片](ldt-20261024-bioinformatics.html)：33 頁，主課程 28 頁＋重點回顧 1 頁＋備查 4 頁，16:9。
 - [逐頁詳解](ldt-20261024-explanations.html)：完整概念、算例前提與限制，適合課後閱讀。
-- [PDF 投影片](../pdf/ldt-20261024-bioinformatics.pdf)：同版面備援，包含全部 32 頁，不包含互動詳解。
+- [PDF 投影片](../pdf/ldt-20261024-bioinformatics.pdf)：同版面備援，包含全部 33 頁，不包含互動詳解。
 - [濃縮架構與原課對應](../../lessons/ldt-20261024-outline.md)、[來源及圖像紀錄](../../sources/ldt-20261024-sources.md)。
 
 講者：奇美醫院精準醫學核心實驗室組長邱家軍。面向沒有程式經驗的臨床／實驗室人員。原九堂系列不變，此檔為另外整理的一小時專題。
@@ -31,6 +31,6 @@ pdftoppm -png -scale-to 1280 output/pdf/ldt-20261024-bioinformatics.pdf output/p
 python3 scripts/check-ldt-pdf.py
 ```
 
-自動檢查之外，仍需目視檢查 HTML 截圖、PDF contact sheets 與原理圖標籤。尚未在實際會場投影機測試，建議授課前以主課程 28 頁完整預演一次，再依聽眾背景取捨備查內容。
+自動檢查之外，仍需目視檢查 HTML 截圖、PDF contact sheets 與原理圖標籤。尚未在實際會場投影機測試，建議授課前以主課程 28 頁及第 32 頁重點回顧完整預演一次，再依聽眾背景取捨備查內容。
 
 `scripts/build-ldt-slides.py` 重用第三堂的基礎版型與導覽，不修改前三堂的來源或產物。八張圖的可編輯 SVG 另存 `figures/ldt-20261024/`。合成圖只說明原理，不能當作實驗室性能證據。官方 IGV 圖保留出處；未執行臨床分析。PDF 與畫面 QA 結果見 [檢查紀錄](ldt-20261024-QA.md)。
