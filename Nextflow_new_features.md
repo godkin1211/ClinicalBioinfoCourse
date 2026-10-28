@@ -194,6 +194,52 @@ Seqera 執行長 Evan Floden 於峰會前夕發布了代號為 **Nextflow Fronti
 
 ---
 
+### 3.4 深度對比：Seqera Co-Scientist vs. Nextflow Frontier
+
+兩者皆為 Seqera 在 2026 年推出的 AI 旗艦創新，但在**系統架構、核心目標、互動模式與解決的問題層次**上截然不同：
+
+```mermaid
+flowchart TD
+    subgraph "Seqera Co-Scientist（工程與維運協同）"
+        CS_Goal["目標：管線工程效率與維運可靠度<br/>(Bioinformatics Factory)"]
+        CS_Role["角色：人機協同副駕駛 / 24/7 自動廠長"]
+        CS_Action["功能：自然語言寫流程、WDL轉Nextflow、<br/>OOM自動診斷修復、自服務介面"]
+    end
+
+    subgraph "Nextflow Frontier（自主科學探索）"
+        FR_Goal["目標：攻克未知科學難題與候選解<br/>(Scientific Discovery)"]
+        FR_Role["角色：目標導向之閉環自主科學家"]
+        FR_Action["功能：提出生物學假說、自寫Nextflow代碼、<br/>平行調度數千任務、BioML跑分閉環演進"]
+    end
+
+    subgraph "底層基礎：Nextflow 26.10 引擎"
+        Engine["分散式計算排程 + 容器隔離 + 全域快取 (Global Cache) + Agent 原語"]
+    end
+
+    CS_Action --> Engine
+    FR_Action --> Engine
+```
+
+#### 詳細維度比較矩陣
+
+| 比較維度 | Seqera Co-Scientist | Nextflow Frontier |
+|---|---|---|
+| **核心定位** | **生物資訊工程與維運協同副駕駛**<br/>(Bioinformatics Engineering & Ops Copilot) | **自主閉環科學探索與研發系統**<br/>(Autonomous Closed-Loop Discovery System) |
+| **解決的根本問題** | 「如何快速、低成本、穩定地**撰寫、執行與修復**管線？」 | 「如何針對未解的生物問題**自動提出假說並驗證出最優解**？」 |
+| **主要工作階段** | 管線生命週期維運（開發、測試、容器化、故障排查） | 前沿科學研究探索（藥物篩選、蛋白質設計、多體學建模） |
+| **運作方式與自主度** | **人機協同（Human-in-the-loop）**<br/>互動式對話 + 事件驅動之背景修復 Agent | **目標導向閉環自主（Goal-directed Loop）**<br/>給定目標函數後自主疊代，無需人工介入每一步 |
+| **工作流邏輯** | 以**現有標準或 SOP** 為基礎（如 nf-core、Wave、已建立的 pipeline），協助調參或排除錯誤 | **無預設既定管線**；AI 根據問題動態合成數千種候選管線與算法進行高通量實測 |
+| **輸入與輸出** | **輸入**：使用者自然語言需求、舊代碼、報錯 Log<br/>**輸出**：Nextflow 代碼、修復補丁 (PR)、診斷報告 | **輸入**：科學問題定義、目標指標 (Success Metric)、原始實驗數據<br/>**輸出**：最佳候選分子／蛋白質變體、高精度預測模型 |
+| **整合介面** | 內建於 **Seqera Platform (Web UI)** 與 **Seqera AI CLI** | 運行於 **Nextflow 分散式引擎之上**，作為高階探索框架 |
+| **典型代表指標** | 每日處理 **600 萬+ 次** 管線運算、自動分類 OOM 錯誤、縮減 80% 開發時間 | 在 **BioML-bench 24 項基準測試中超越 92% 系統**（EGFR 藥物親和力達第 96 百分位） |
+| **主要使用者** | 生物資訊工程師、核心實驗室管理員、臨床/濕實驗人員 | 計算生物學家、藥物化學家、蛋白質工程師、前沿研發團隊 |
+
+#### 形象化比喻：
+* **Seqera Co-Scientist 是「生訊超級工廠的總工程師與廠長」**：負責把機台架好、管線配妥、自動檢修排除障礙、維持良率，並提供親切的儀表板讓每位科學家都能安全啟動流程。
+* **Nextflow Frontier 是「工廠內部的超級自主研發實驗室」**：負責日夜無休地構思成千上萬種新藥分子或蛋白質突變方案，動態調度整座工廠的產線進行平行大規模驗證，並從數據中自我進化直到找到最佳答案。
+
+---
+
 ## 4. Nextflow YouTube 頻道與 Summit 2026 大會議程精選
 
 Nextflow 官方 YouTube 頻道（[@Nextflow](https://www.youtube.com/@Nextflow/videos)）於 10 月期間密集上傳並直播了 Nextflow Summit 2026（波士頓、線上峰會與巴塞隆納工作坊）之精選演講與技術培訓。
