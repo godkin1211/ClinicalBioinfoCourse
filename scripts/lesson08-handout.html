@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>$pagetitle$</title>
+<style>
+:root{color-scheme:light;--ink:#20343a;--teal:#126e69;--line:#d6e2df}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:30px}body{margin:0;background:#f5f7f3;color:var(--ink);font:18px/1.85 -apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC",sans-serif}.layout{display:grid;grid-template-columns:250px minmax(0,1fr);gap:40px;max-width:1580px;margin:auto;padding:36px 32px}aside{position:sticky;top:24px;align-self:start;max-height:94vh;overflow:auto;font-size:14px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:10px}aside ul{list-style:none;padding-left:12px}aside a{text-decoration:none}aside summary{font-weight:700;cursor:pointer}main{min-width:0;background:white;border:1px solid var(--line);border-radius:12px;padding:35px 42px}h1{font-size:32px;line-height:1.5;letter-spacing:.02em}h2{font-size:27px;margin-top:64px;padding-bottom:12px;border-bottom:2px solid var(--teal)}h3{font-size:23px;margin-top:36px}h4{font-size:20px;margin-top:30px}a{color:var(--teal);overflow-wrap:anywhere}p,li{overflow-wrap:break-word}pre{overflow-x:auto;background:#f1f5f4;padding:18px;border:1px solid var(--line);border-radius:8px;line-height:1.6;font-size:14px}code{font-family:ui-monospace,"SFMono-Regular",Consolas,monospace;font-size:.88em}p code,li code,td code{background:#edf3f1;padding:2px 4px;border-radius:3px}table{border-collapse:collapse;width:100%;font-size:16px;margin:22px 0}th,td{padding:12px 14px;text-align:left;border:1px solid var(--line);overflow-wrap:anywhere}th{background:#e7f0ed}blockquote{border-left:4px solid var(--teal);margin-left:0;padding-left:20px}.workflow-diagram{margin:25px 0;text-align:center}.workflow-diagram svg{width:100%;height:auto;max-width:100%}figcaption,.small{font-size:14px;color:#566d70}.report-panel{margin:38px -20px;padding:22px;background:#f1f7f5;border:1px solid #b8d0c8;border-radius:10px}.report-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}.report-actions button,.report-actions a{font:inherit;font-size:15px;background:#fff;border:1px solid var(--teal);padding:8px 14px;border-radius:5px;color:var(--teal);cursor:pointer;text-decoration:none}iframe{display:block;width:100%;height:840px;border:1px solid var(--line);background:white}.report-panel.expanded{position:fixed;inset:8px;z-index:1000;overflow:auto;margin:0;background:white}.report-panel.expanded iframe{height:calc(100vh - 280px);min-height:400px}.footnotes{font-size:15px}hr{border:0;border-top:1px solid var(--line);margin:30px 0}
+$if(highlighting-css)$$highlighting-css$$endif$
+@media(max-width:900px){.layout{display:block;padding:16px}aside{position:static;max-height:260px;margin-bottom:20px}main{padding:22px 18px}h1{font-size:27px}table{font-size:14px}td,th{padding:7px}.report-panel{margin:25px 0;padding:12px}iframe{height:720px}}
+@media print{aside,.report-actions,iframe{display:none}.layout{display:block;padding:0}main{border:0;padding:0}body{font-size:11pt}h2{margin-top:25px}pre{white-space:pre-wrap}.report-panel{break-inside:avoid}}
+</style></head>
+<body><div class="layout"><aside><details open><summary>第八堂｜章節導覽</summary>$toc$<p><a href="#embedded-qc">查看內嵌 QC 報告</a></p></details></aside><main>$body$</main></div>
+<!--QC_DATA-->
+<script>
+const bytes=Uint8Array.from(atob(document.getElementById('qc-data').textContent.trim()),c=>c.charCodeAt(0));
+const report=new TextDecoder().decode(bytes);
+document.getElementById('qc-report').srcdoc=report;
+const url=URL.createObjectURL(new Blob([report],{type:'text/html;charset=utf-8'}));
+document.getElementById('download-report').href=url;
+document.getElementById('open-report').onclick=()=>window.open(url,'_blank','noopener');
+document.getElementById('expand-report').onclick=()=>{const p=document.getElementById('embedded-qc');p.classList.toggle('expanded');document.getElementById('expand-report').textContent=p.classList.contains('expanded')?'返回講義':'放大報告';};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.getElementById('embedded-qc').classList.remove('expanded');document.getElementById('expand-report').textContent='放大報告';}});
+</script></body></html>

@@ -1,0 +1,12 @@
+{
+  "source": "lessons/lesson-08-materials.md",
+  "source_sha256": "1310174f009288ab21d618a0b15f3cf22853f37f405284275039b364fb987950",
+  "report_source": "demos/nextflow-qc/results/seqera-ai-20261103/multiqc/multiqc_report.html",
+  "report_sha256": "8b866aa1b4ff7a7dfd3d1cac1371cad36aa9908c87206482130940834dffa88b",
+  "published_report_sha256": "2fc22bc8428eb288fb0e069678f85f95fe643fe8d8f4122640bb16e351c3ea90",
+  "summary_normalized": true,
+  "mermaid_version": "10.9.3",
+  "diagrams": 1,
+  "source_note": "Built from the current working copy; existing local header-date edits are preserved, not staged by this build.",
+  "report_note": "Executed synthetic data; local paths replaced; online requests blocked; QC values unchanged; only final AI text is presented."
+}
