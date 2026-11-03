@@ -13,7 +13,7 @@ fs.mkdirSync(output,{recursive:true});
   const errors=[],network=[];
   page.on('pageerror',e=>errors.push(e.message));
   page.on('request',r=>{if(/^https?:/.test(r.url()))network.push(r.url());});
-  await page.goto(pathToFileURL(path.join(root,'output/slides/lesson-08-materials.html')).href);
+  await page.goto(pathToFileURL(process.env.HANDOUT_HTML || path.join(root,'output/slides/lesson-08-materials.html')).href);
   await page.evaluate(()=>document.fonts.ready);
   assert.ok(!(await page.locator('body').innerText()).includes('第八堂'));
   assert.ok(!(await page.title()).includes('第八堂'));

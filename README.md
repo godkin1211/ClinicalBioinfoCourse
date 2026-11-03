@@ -59,6 +59,8 @@
 
 ### Nextflow FASTQ QC
 
+- [離線分享 ZIP](output/packages/nextflow-handout.zip)：解壓後開啟 `Nextflow-handout/index.html`，附完整講義、內嵌 MultiQC／AI 最終摘要及合成實作檔案，不含憑證或執行暫存。可用 `python3 scripts/package-lesson08-handout.py` 重新打包。
+
 - [HTML 學員講義](output/slides/lesson-08-materials.html)：完整正文與內嵌互動 MultiQC／既有 Seqera AI 摘要，單檔可離線閱讀；[閱讀與編譯說明](output/slides/lesson-08-materials-README.md)。
 
 - [第八堂完整學員講義](lessons/lesson-08-materials.md)：安裝、背景原理、指令與程式導讀、合成輸入、預期輸出、快取實驗、排錯及新版功能限制。
