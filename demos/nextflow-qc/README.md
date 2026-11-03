@@ -135,6 +135,8 @@ nextflow secrets list
 
 ### 執行現有檔案掛載流程
 
+若要在 workflow 結束後以 Gmail 寄送成功／失敗通知，參考[講義第 9.5.2 節](../../lessons/lesson-08-materials.md#952-延伸設定用-gmail-通知流程完成或失敗)。另提供 `conf/gmail.config` 與精簡的 `conf/workflow-status.txt`；需先登錄自己的 `GMAIL_SMTP_USER`、`GMAIL_APP_PASSWORD`，再以 `-c conf/gmail.config -N 收件地址` 明確啟用。此選配不會自動載入，也不需要將 Gmail 憑證掛載給分析容器。本次只檢查語法及模板，未以真實 Gmail 寄信。
+
 ```bash
 nextflow run . -profile seqera_ai \
     --seqera_token_file /absolute/path/to/seqera-token \

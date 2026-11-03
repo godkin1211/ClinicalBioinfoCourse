@@ -579,7 +579,80 @@ nextflow secrets list
 
 一般 process 可透過 `secret` directive 宣告所需名稱，再由 task 環境變數供工具讀取；這是後續流程整合工作。不要將 secret 值指定到 `params`、放入 prompt、列印在日誌，或提交到 Git。原生 Nextflow `agent` 的憑證設定與 MultiQC process 不同，也應另行核對。[^16]
 
-#### 9.5.2 執行現有範例：目前仍使用唯讀 token 檔
+#### 9.5.2 延伸設定：用 Gmail 通知流程完成或失敗
+
+除了 AI token，也可用 Nextflow secrets 管理寄信憑證。這裡使用 Gmail SMTP，在整個 workflow 結束時寄出狀態通知，成功與失敗都可通知；不是每個 task 的即時進度，也不是定時心跳。Nextflow 主程式被強制終止、主機斷電或在通知機制初始化前就失敗時，不保證能寄信。[^18]
+
+**先準備 Google 帳戶與應用程式密碼。**使用機構核准的寄件帳號，啟用兩步驟驗證後，至 [Google 應用程式密碼](https://myaccount.google.com/apppasswords) 建立專供本示範使用的密碼，例如命名為 `Nextflow course notifications`。這是 Google 產生的 16 字元應用程式密碼，不是平常登入密碼、兩步驟驗證碼或 Seqera token。若找不到選項，可能受機構帳號、安全金鑰限定或進階保護政策限制；請詢問管理員，不要關閉安全機制。Google 一般優先建議安全的 Google 登入方式，本段僅示範允許使用應用程式密碼的 SMTP 情境。[^19]
+
+將應用程式密碼放在 repository 外的純文字檔，不要存入教材或公開設定。以下用兩個不同名稱登錄，請改成自己的寄件地址與檔案路徑：
+
+```bash
+set +x
+nextflow secrets set GMAIL_SMTP_USER 'your.sender@gmail.com'
+gmail_password_path='/absolute/path/to/gmail-app-password'
+test -s "$gmail_password_path" && nextflow secrets set GMAIL_APP_PASSWORD \
+    "$(tr -d '[:space:]' < "$gmail_password_path")"
+nextflow secrets list
+```
+
+`GMAIL_SMTP_USER` 是完整寄件 Gmail／Google Workspace 地址；`GMAIL_APP_PASSWORD` 是應用程式密碼。`tr` 去掉顯示時的分組空白與換行。清單應看到這兩個名稱，但不會驗證 Gmail 是否接受它們；與前段相同，註冊時仍有命令列參數短暫可見的風險。勿使用 `secrets get` 投影密碼。這些憑證與 `SEQERA_ACCESS_TOKEN` 分開，互相不能代用。
+
+專案已提供可選的 [conf/gmail.config](../demos/nextflow-qc/conf/gmail.config)，核心設定如下；只引用 secret 名稱，不包含值：
+
+```groovy
+mail {
+    from = secrets.GMAIL_SMTP_USER
+    smtp {
+        host = 'smtp.gmail.com'
+        port = 587
+        user = secrets.GMAIL_SMTP_USER
+        password = secrets.GMAIL_APP_PASSWORD
+        auth = true
+        starttls.enable = true
+        starttls.required = true
+        ssl.enable = false
+    }
+}
+```
+
+`SMTP` 是寄送郵件的通訊協定；此例連線至 Gmail 的 `587` 埠，再以 STARTTLS 升級為加密連線，`required` 要求升級成功才繼續。它不同於 `465` 埠的一開始即使用 SSL/TLS，不能只更換數字而維持其他設定不變。寄件地址應與登入帳號一致，本例不處理其他寄件別名。[^20][^21]
+
+完整設定另將郵件除錯關閉、設定有限逾時，並採[精簡狀態模板](../demos/nextflow-qc/conf/workflow-status.txt)，只列 run name、成功／失敗、完成時間、耗時與退出碼，不列樣本、命令列、完整錯誤或附件。run name 也不可包含病人識別資訊。Gmail 寄信由啟動 Nextflow 的主機進行，不需要把 Gmail 憑證傳給 FastQC／MultiQC 容器。
+
+先以合成資料測試通知，從 `demos/nextflow-qc` 執行，並將 `learner@example.org` 改成你已確認且獲准收信的地址：
+
+```bash
+nextflow run . -profile docker -c conf/gmail.config \
+    --input data/samplesheet-one.csv \
+    --outdir results/gmail-success \
+    -N learner@example.org
+```
+
+`-c` 加載額外 SMTP 設定；`-N` 指定收件者並啟用完成通知。原設定檔不會自動載入 Gmail，且附加設定本身的 `notification.enabled` 預設為 `false`，避免只是讀取設定就寄信。以下再測試已知缺檔的失敗案例，預期 Nextflow 非零退出；應另外收到 FAILED 狀態通知：[^18][^22]
+
+```bash
+nextflow run . -profile docker -c conf/gmail.config \
+    --input data/samplesheet-missing.csv \
+    --outdir results/gmail-failure \
+    -N learner@example.org
+```
+
+信件中的 `SUCCESS` 只表示 workflow 執行成功，不代表 FastQC 全部合格或 AI 解讀正確。這個寄信測試不會呼叫 Seqera AI；若之後要同時啟用 AI，仍須明確選用 `seqera_ai` 並提供目前流程要求的 token 檔。
+
+| 問題 | 優先確認與處理 |
+|---|---|
+| Authentication failed／535 | 用的是應用程式密碼、帳號是否完整、密碼是否已被撤銷或受政策阻擋 |
+| 連線逾時 | 啟動 Nextflow 的主機是否可連 Gmail 587 埠；院內防火牆與出站 SMTP 政策 |
+| TLS 憑證錯誤 | 系統時間、JDK 信任憑證與機構代理；不要關閉憑證驗證或強制信任所有主機 |
+| 流程結束但沒收到信 | 檢查收件者、垃圾郵件匣、Google 寄送限制及 `.nextflow.log` 的通知警告 |
+| 修改 Google 登入密碼後寄送失敗 | 應用程式密碼可能已撤銷，重新建立並更新 secret；不需改公開程式碼 |
+
+通知失敗不一定會讓分析流程變成 FAILED，因此必須實際確認信件送達，不能只看分析退出碼。不要開啟 `mail.debug` 在課堂顯示認證往來；也不要直接輸出展開後的完整 Nextflow 設定。正式院內工作應優先依資訊政策使用核准的郵件伺服器或 SMTP relay，而不是自行外送臨床資訊。[^18][^19][^20]
+
+本教材已做設定語法與模板檢查，未使用真實 Gmail 帳號驗證 SMTP 認證或收件匣送達；學員需在核准環境完成上述成功與失敗通知測試。
+
+#### 9.5.3 執行現有範例：目前仍使用唯讀 token 檔
 
 目前教材的 `seqera_ai` profile 尚未改為從 secrets store 取用，因此即使完成上面的登錄，仍須使用下列 `--seqera_token_file`。這是兩個獨立動作：先學會登錄與管理憑證，現有流程暫時保持檔案掛載；登錄不會自動取代掛載，也不會刪除原 token 檔。
 
@@ -642,3 +715,8 @@ token 放在 repository 外的純文字檔，使用自己的絕對路徑，不�
 [^15]: MultiQC，AI summaries；服務會接收報告資料，並有憑證及人工審核要求。https://docs.seqera.io/multiqc/ai/
 [^16]: Nextflow，Secrets；本地憑證管理、process 取用與避免參數／日誌洩漏。https://docs.seqera.io/nextflow/secrets
 [^17]: Nextflow，secrets CLI；set 建立或更新、list 列出名稱、get 取出值。https://docs.seqera.io/nextflow/reference/cli/secrets
+[^18]: Nextflow，Notifications；完成事件、SMTP、內建 -N 通知與寄信失敗行為。https://docs.seqera.io/nextflow/notifications
+[^19]: Google，使用應用程式密碼登入帳戶；兩步驟驗證、帳號限制與密碼撤銷。https://support.google.com/accounts/answer/185833?hl=zh-Hant
+[^20]: Google Workspace，Send email from a printer, scanner, or app；Gmail SMTP 與 SMTP relay。https://knowledge.workspace.google.com/admin/gmail/send-email-from-a-printer-scanner-or-app
+[^21]: Nextflow，mail configuration；SMTP 與 Java Mail 屬性。https://docs.seqera.io/nextflow/reference/config/mail
+[^22]: Nextflow，notification configuration；enabled、from、to 與 template。https://docs.seqera.io/nextflow/reference/config/notification

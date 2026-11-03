@@ -1,0 +1,10 @@
+Nextflow course workflow notification
+
+Run: ${workflow.runName}
+Status: ${workflow.success ? 'SUCCESS' : 'FAILED'}
+Completed: ${workflow.complete}
+Duration: ${workflow.duration}
+Exit status: ${workflow.exitStatus}
+
+This is an execution-status notification, not a clinical QC approval.
+Review the reports and logs on the approved analysis system.

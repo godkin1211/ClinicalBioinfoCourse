@@ -75,3 +75,14 @@ MultiQC 1.30 的 `multiqc_general_stats.txt` 將 `fastqc-total_sequences` 以百
 - 原始非 AI Docker 路線另執行回歸測試，仍由原版 `multiqc` 生成報告
 
 `seqera_ai` 將 MULTIQC 設為不快取，因此 `-resume` 可重用 FastQC，但再次生成摘要會呼叫服務。AI 結果是輔助文字，不作為臨床品質認證；本次只確認功能及資料對應，不宣稱模型解讀正確。
+
+## 📧 2026-11-03：Gmail 通知教材的檢查範圍
+
+另提供 `conf/gmail.config` 與 `conf/workflow-status.txt`，須先自行設定 Gmail secrets，並以 `-c conf/gmail.config -N 收件地址` 明確啟用；預設流程不載入此設定，也未修改既有分析步驟。
+
+- Nextflow 26.10.3：`nextflow lint demos/nextflow-qc/conf/gmail.config` 無錯誤
+- 使用同版 Nextflow 內附的 Groovy `GStringTemplateEngine`，以人工 workflow metadata 渲染 SUCCESS／FAILED 兩種情境，文字均符合預期
+- 講義 Bash 區塊通過 `bash -n`，Markdown code fences 配對與本機連結目標檢查通過
+- 未建立或讀取 Gmail 帳號密碼、未連線 Gmail SMTP、未寄信，也未驗證收件匣送達
+
+因此本節不宣稱 Gmail 端到端實測成功；學員須在核准環境完成教材列出的成功與缺檔失敗通知測試。通知只表示執行狀態，且郵件傳送失敗不一定改變分析退出碼。
