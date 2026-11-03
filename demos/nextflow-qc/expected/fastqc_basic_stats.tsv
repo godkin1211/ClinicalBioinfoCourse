@@ -1,0 +1,5 @@
+read_file	total_sequences	sequence_length	cycle_1_mean_quality
+sampleA_R1	4	40	30
+sampleA_R2	4	40	30
+sampleB_R1	4	40	30
+sampleB_R2	4	40	30

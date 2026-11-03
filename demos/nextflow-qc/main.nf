@@ -1,5 +1,3 @@
-nextflow.enable.dsl = 2
-
 /*
  * Teaching workflow:
  * samplesheet -> one FASTQC task per sample -> one MULTIQC summary.
@@ -19,7 +17,7 @@ process FASTQC {
     path "*_fastqc.zip",  emit: zip
 
     script:
-    def read_args = reads.collect { it.toString() }.join(' ')
+    def read_args = reads.collect { read -> "'${read}'" }.join(' ')
     """
     fastqc \
         --threads ${task.cpus} \
@@ -64,7 +62,7 @@ process MULTIQC {
 }
 
 workflow {
-    samples = Channel
+    samples = channel
         .fromPath(params.input, checkIfExists: true)
         .splitCsv(header: true)
         .map { row ->

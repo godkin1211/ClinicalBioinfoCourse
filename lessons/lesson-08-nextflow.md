@@ -1,5 +1,7 @@
 # Lesson 08 — Nextflow：可重現生物資訊流程基礎
 
+學員請閱讀[完整課程講義](lesson-08-materials.md)：包含安裝、程式說明、實作輸入與預期輸出。以下保留原始教案架構，非完整操作手冊；實測狀態以[驗證紀錄](../demos/nextflow-qc/VALIDATION.md)為準。
+
 ## 課程目標
 
 完成本堂後，學員能：

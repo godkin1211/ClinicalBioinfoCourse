@@ -59,13 +59,16 @@
 
 ### Nextflow FASTQ QC
 
+- [第八堂完整學員講義](lessons/lesson-08-materials.md)：安裝、背景原理、指令與程式導讀、合成輸入、預期輸出、快取實驗、排錯及新版功能限制。
+- [實測紀錄](demos/nextflow-qc/VALIDATION.md)：真實 FastQC／MultiQC 容器執行與內容驗證。
+
 [demos/nextflow-qc](demos/nextflow-qc) 包含：
 
 - DSL2 `process`、`channel` 與 `workflow`
 - 合成 FASTQ 與 sample sheet
 - FastQC → MultiQC 流程
 - Docker、Conda 與本機執行 profile
-- `-stub-run` 無工具驗證方式
+- `-stub-run` 占位模式（不能取代實際工具驗證）
 - execution report、timeline、trace 與 DAG 設定
 
 ### AI Agent RNA-seq 稽核
