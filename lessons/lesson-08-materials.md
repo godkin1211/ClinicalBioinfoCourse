@@ -546,6 +546,43 @@ nf-core 提供社群維護的 pipelines 與 modules；本例是教學程式，�
 
 MultiQC 的 AI 摘要與 Nextflow 的 `agent` 元件不同：前者是 MultiQC 將 QC 統計送給模型做文字摘要，不需要在流程裡使用 `agent` 語法。範例另提供 `seqera_ai` profile，須明確選用才會送出資料；一般 Docker 示範不會自動呼叫 AI。[^15]
 
+#### 9.5.1 先準備憑證：登錄到 Nextflow secrets
+
+Seqera AI 需要 Seqera access token。可先到 Seqera 的 Access tokens 頁面建立自己的 token，存成 repository 外的單行純文字檔，再登錄到 Nextflow 的本地 secrets store。此步驟的目的只是讓 Nextflow 管理具名憑證；後續由哪個 process 或 agent 使用，另行設定，不必在登錄時就決定。[^15][^16]
+
+以下適用 macOS、Linux 與 WSL 的 Bash／Zsh。請將路徑改成自己已備妥的 token 檔，檔案只能包含 token，可有結尾換行；不要貼入 `export ...`、JSON 或其他程式碼。先關閉 shell 指令追蹤，再執行：
+
+```bash
+set +x
+seqera_token_path='/absolute/path/to/seqera-token'
+test -s "$seqera_token_path" && nextflow secrets set SEQERA_ACCESS_TOKEN \
+    "$(tr -d '\r\n' < "$seqera_token_path")"
+```
+
+`test -s` 確認檔案存在且非空，`&&` 表示檢查成功才登錄。`tr` 去除換行，`$(...)` 將讀到的值作為 `set` 的第二個參數；`SEQERA_ACCESS_TOKEN` 是憑證名稱，不是 token 值。`set` 會建立或更新同名 secret，若已有其他用途的同名憑證，先確認再覆寫。[^17]
+
+此寫法不把 token 明文寫進 shell history，但值仍會短暫成為註冊程式的命令列參數；共用主機須依機構規範評估。不要啟用 `set -x`，也不要使用 `echo`、截圖或錄影顯示 token。secrets store 不是硬體級秘密保護，也不代表資料已獲准外送。
+
+接著只確認名稱，不顯示值：
+
+```bash
+nextflow secrets list
+```
+
+預期名稱清單中包含 `SEQERA_ACCESS_TOKEN`，可能也有其他既有名稱。這只證明本地 store 有該名稱，不會驗證 token 有效期限、服務權限或 API 連線。不要在課堂投影執行 `nextflow secrets get SEQERA_ACCESS_TOKEN`，因為 `get` 會取出值。[^17]
+
+| 階段 | 完成後代表什麼 | 尚未代表什麼 |
+|---|---|---|
+| `secrets set` | Nextflow 已保存具名憑證 | 未呼叫 AI，也未替流程啟用 AI |
+| 在需要的步驟宣告取用 | 該步驟可取得憑證 | 不會自動修正 API 路由或驗證資料外送政策 |
+| 呼叫服務並確認摘要 | 該次整合確實得到回覆 | 不保證摘要內容正確 |
+
+一般 process 可透過 `secret` directive 宣告所需名稱，再由 task 環境變數供工具讀取；這是後續流程整合工作。不要將 secret 值指定到 `params`、放入 prompt、列印在日誌，或提交到 Git。原生 Nextflow `agent` 的憑證設定與 MultiQC process 不同，也應另行核對。[^16]
+
+#### 9.5.2 執行現有範例：目前仍使用唯讀 token 檔
+
+目前教材的 `seqera_ai` profile 尚未改為從 secrets store 取用，因此即使完成上面的登錄，仍須使用下列 `--seqera_token_file`。這是兩個獨立動作：先學會登錄與管理憑證，現有流程暫時保持檔案掛載；登錄不會自動取代掛載，也不會刪除原 token 檔。
+
 ```bash
 nextflow run . -profile seqera_ai \
     --seqera_token_file /absolute/path/to/seqera-token \
@@ -603,3 +640,5 @@ token 放在 repository 外的純文字檔，使用自己的絕對路徑，不�
 [^13]: nf-core，Pipelines。https://nf-co.re/pipelines
 [^14]: Nextflow，Agents（preview；尤其 caching 與 containerization 章節）。https://docs.seqera.io/nextflow/agent
 [^15]: MultiQC，AI summaries；服務會接收報告資料，並有憑證及人工審核要求。https://docs.seqera.io/multiqc/ai/
+[^16]: Nextflow，Secrets；本地憑證管理、process 取用與避免參數／日誌洩漏。https://docs.seqera.io/nextflow/secrets
+[^17]: Nextflow，secrets CLI；set 建立或更新、list 列出名稱、get 取出值。https://docs.seqera.io/nextflow/reference/cli/secrets

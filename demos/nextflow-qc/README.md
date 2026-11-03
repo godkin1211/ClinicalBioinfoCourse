@@ -117,6 +117,24 @@ nextflow run . -profile docker -resume
 
 此 profile 會把 QC 報告資料送至 Seqera AI；只對公開／合成資料或已核准資料使用。預設 `docker` profile 不啟用 AI。token 檔須只包含單一 token，可帶結尾換行；不要 `source` 不可信任的憑證檔，也不要把 token 值貼入命令、設定、Git 或課堂畫面。
 
+### 先登錄憑證，再決定如何取用
+
+可先把既有 token 登錄到 Nextflow 本地 secrets store（詳見[講義第 9.5.1 節](../../lessons/lesson-08-materials.md#951-先準備憑證登錄到-nextflow-secrets)）：
+
+```bash
+set +x
+seqera_token_path='/absolute/path/to/seqera-token'
+test -s "$seqera_token_path" && nextflow secrets set SEQERA_ACCESS_TOKEN \
+    "$(tr -d '\r\n' < "$seqera_token_path")"
+nextflow secrets list
+```
+
+請換成自己的單行 token 檔路徑；同名 `set` 會更新既有 secret。名稱清單應包含 `SEQERA_ACCESS_TOKEN`，但不代表已驗證 API 權限。不要投影 `secrets get` 或列印值。此命令避免將 token 明文貼入 shell history，但值仍會短暫出現在註冊程式的命令列參數，須考慮共用主機風險。參考 [Nextflow secrets 官方文件](https://docs.seqera.io/nextflow/secrets)。
+
+登錄只負責保存憑證，不呼叫 AI。**目前 `seqera_ai` profile 仍採下面的 token 檔案掛載方式，尚未接上 secrets store**；不能省略 `--seqera_token_file`。之後若改用 secrets，須另外調整 process 的取用方式、移除檔案掛載與相關檢查，並重新實測。此次僅補教材，不變更執行流程。
+
+### 執行現有檔案掛載流程
+
 ```bash
 nextflow run . -profile seqera_ai \
     --seqera_token_file /absolute/path/to/seqera-token \
