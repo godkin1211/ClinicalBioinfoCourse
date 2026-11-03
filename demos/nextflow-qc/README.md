@@ -112,3 +112,27 @@ nextflow run . -profile docker -resume
 - Container tag、Nextflow 與 Java 版本應於上課前重新測試。
 - `-resume` 依 cache 判斷，不代表 biological result 已驗證。
 - Production 使用應考慮 schema validation、reference manifest、test profiles、CI 與 institutional execution profiles。
+
+## 選配：Seqera AI 摘要
+
+此 profile 會把 QC 報告資料送至 Seqera AI；只對公開／合成資料或已核准資料使用。預設 `docker` profile 不啟用 AI。token 檔須只包含單一 token，可帶結尾換行；不要 `source` 不可信任的憑證檔，也不要把 token 值貼入命令、設定、Git 或課堂畫面。
+
+```bash
+nextflow run . -profile seqera_ai \
+    --seqera_token_file /absolute/path/to/seqera-token \
+    --input data/samplesheet.csv \
+    --outdir results/seqera-ai
+python3 verify.py results/seqera-ai --samples sampleA sampleB --ai
+```
+
+`seqera_ai` 已啟用本機 Docker，只將指定檔案唯讀掛載到 MULTIQC 的 `/run/secrets/seqera_token`，由容器內讀成 `SEQERA_ACCESS_TOKEN`。token 值不經過 Nextflow 參數或設定插值。檔案應存放於 repository 之外，且僅允許必要帳號讀取。這不是硬體秘密保護：Docker 管理者與容器內程式仍可讀取它。
+
+AI 的 MULTIQC task 設定 `cache = false`；即使加 `-resume`，摘要仍會重新呼叫服務，可能消耗配額。FastQC 仍可重用。請不要為了測試快取而反覆送出 AI 請求。
+
+### MultiQC 1.30 的 API 相容性
+
+截至 2026-11-03，1.30 預設 `intern.seqera.io` 無法解析；文件中的 `ai.seqera.io` 路徑又會重新導向網頁。官方現行 MultiQC `main` 已使用 `/internal-ai/report-summary`，官方服務公開 schema 也列出同名摘要端點。因此提供限於 **MultiQC 1.30** 的 [相容入口](bin/multiqc-seqera.py)：沿用 MultiQC 的 prompt、token 驗證及 request/response 處理，只將 Seqera 請求導向 `https://ai-api.seqera.io/v1/web/internal-ai/report-summary`，不修改安裝套件，也不影響預設非 AI 流程。
+
+這是本課的相容包裝，不是宣稱原版 1.30 原生端點仍正常；未來升級時必須重新檢查並移除不再需要的包裝。官方參考：[AI 說明](https://docs.seqera.io/multiqc/ai/)、[目前原始碼](https://github.com/MultiQC/MultiQC/blob/main/multiqc/core/ai.py)、[公開 API schema](https://ai-api.seqera.io/openapi.json)。
+
+原版 MultiQC 在摘要失敗時可能仍退出 0；相容入口會額外確認 `ai_global_summary` 非空，缺少摘要時以失敗退出。`verify.py --ai` 則獨立確認最終 HTML 確實嵌入摘要，而不是只有按鈕。這只驗證功能，不證明摘要科學內容正確。

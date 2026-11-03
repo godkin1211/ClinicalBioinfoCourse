@@ -58,3 +58,20 @@ MultiQC 1.30 的 `multiqc_general_stats.txt` 將 `fastqc-total_sequences` 以百
 本次另發現舊測試資料品質全為 `I`，FastQC 會將其推定為 Illumina 1.5／Phred+64，而得到 Q9。現於每檔第一筆首位加入 `!`，使編碼辨識為 `Sanger / Illumina 1.9`，符合課程的 Phred+33 設定。第一個 cycle 四筆品質為 0、40、40、40，平均 30；其餘 cycle 平均 40。
 
 所有 FastQC 與 MultiQC HTML／ZIP 均為工具實際輸出；`verify.py` 同時檢查檔案內容、MultiQC 樣本集合及 task 狀態。講義另外做 Markdown 區塊、相對連結、Bash 語法及合成 FASTQ 結構檢查。沒有把執行 SUCCESS、FastQC flag 或這些工程測試等同臨床適用性驗證。
+
+## 🔐 2026-11-03：選配 Seqera AI 設定實測
+
+在使用者明確指定本機 token 後，新增 `seqera_ai` profile；預設不啟用。token 檔在 repository 外，僅唯讀掛載給 MULTIQC，由容器內讀取，未將值插入參數或設定。測試送出的僅為本課兩個合成樣本的 QC 資料。
+
+實測發現原版 1.30 的 `intern.seqera.io` 無法解析；官方文件當時列出的 `ai.seqera.io/v1/web` 會重新導向 HTML。確認官方最新原始碼已改用 `report-summary` 路由，且官方 `ai-api.seqera.io/openapi.json` 提供相符的 request schema 後，加入限於 1.30 的相容入口，將 Seqera 請求送到該官方新路由。原套件與 container image 未更動。此相容包裝需隨版本與 API 更新重新驗證，不代表原版端點正常。
+
+成功輸出保留在本機忽略目錄 `results/seqera-ai-20261103/`。已確認：
+
+- 真正取得 Seqera AI 回覆，`global_ai_summary_response` 含非空摘要文字
+- `python3 verify.py results/seqera-ai-20261103 --samples sampleA sampleB --ai` 通過
+- 相容入口遇到空摘要會非零退出；驗證程式也不接受只有 AI 按鈕的空報告
+- Nextflow lint 無錯誤；新增 Python 程式通過語法檢查
+- 來源、task 腳本與結果共 349 個檔案的內容檢查，未發現 token 值；沒有列印或提交 token
+- 原始非 AI Docker 路線另執行回歸測試，仍由原版 `multiqc` 生成報告
+
+`seqera_ai` 將 MULTIQC 設為不快取，因此 `-resume` 可重用 FastQC，但再次生成摘要會呼叫服務。AI 結果是輔助文字，不作為臨床品質認證；本次只確認功能及資料對應，不宣稱模型解讀正確。

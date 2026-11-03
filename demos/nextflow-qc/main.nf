@@ -46,10 +46,20 @@ process MULTIQC {
     path 'multiqc_data',        emit: data
 
     script:
+    def multiqc_command = params.seqera_ai ? 'multiqc-seqera.py' : 'multiqc'
+    def ai_args = params.seqera_ai ? '--ai --ai-provider seqera' : ''
+    // Read inside the container; never interpolate the token into task scripts.
+    def ai_setup = params.seqera_ai ? '''
+    set +x
+    export SEQERA_ACCESS_TOKEN="$(tr -d '\\r\\n' < /run/secrets/seqera_token)"
+    test -n "$SEQERA_ACCESS_TOKEN" || { echo 'Empty Seqera token file' >&2; exit 1; }
+    ''' : ''
     """
-    multiqc \
+    ${ai_setup}
+    ${multiqc_command} \
         --force \
         --outdir . \
+        ${ai_args} \
         ${fastqc_archives.join(' ')}
     """
 
@@ -62,6 +72,18 @@ process MULTIQC {
 }
 
 workflow {
+    if (params.seqera_ai) {
+        if (!workflow.profile.tokenize(',').contains('seqera_ai')) {
+            error 'Enable AI with -profile seqera_ai (Docker and token mount required)'
+        }
+        if (!params.seqera_token_file || !params.seqera_token_file.startsWith('/') || params.seqera_token_file.contains("'") || params.seqera_token_file.contains(',')) {
+            error 'Provide --seqera_token_file as an absolute file path without quotes or commas'
+        }
+        if (!file(params.seqera_token_file).isFile()) {
+            error 'Seqera token file does not exist or is not a regular file'
+        }
+        log.info 'Seqera AI enabled: QC report data will be sent to Seqera. Token is read only inside MULTIQC.'
+    }
     samples = channel
         .fromPath(params.input, checkIfExists: true)
         .splitCsv(header: true)

@@ -542,6 +542,22 @@ nf-core 提供社群維護的 pipelines 與 modules；本例是教學程式，�
 
 本堂理解流程如何受控；第九堂再深入 agent／Skill 的操作與人工審核，不要求本堂先申請付費模型或提供 API key。
 
+### 9.5 選配實作：MultiQC 的 Seqera AI 摘要
+
+MultiQC 的 AI 摘要與 Nextflow 的 `agent` 元件不同：前者是 MultiQC 將 QC 統計送給模型做文字摘要，不需要在流程裡使用 `agent` 語法。範例另提供 `seqera_ai` profile，須明確選用才會送出資料；一般 Docker 示範不會自動呼叫 AI。[^15]
+
+```bash
+nextflow run . -profile seqera_ai \
+    --seqera_token_file /absolute/path/to/seqera-token \
+    --input data/samplesheet.csv \
+    --outdir results/seqera-ai
+python3 verify.py results/seqera-ai --samples sampleA sampleB --ai
+```
+
+token 放在 repository 外的純文字檔，使用自己的絕對路徑，不要把 token 值填入命令。設定只將此檔唯讀掛載給 MultiQC，由容器內讀取；不會把值插入 Nextflow 設定或 task 指令。AI 的 MultiQC 不使用快取，重跑可能再次消耗服務配額。
+
+1.30 的預設 Seqera API 已不適用，因此此選配路線使用明確標示的相容入口，僅更新到官方新摘要路由。詳見[安裝與 API 相容性說明](../demos/nextflow-qc/README.md#選配seqera-ai-摘要)。原始 MultiQC 的 SUCCESS 不保證有摘要；相容入口與 `--ai` 驗證都會檢查摘要實際存在。即使功能成功，仍須人工核對數值、樣本、限制與建議，不讓 AI 自行排除樣本或設定臨床門檻。
+
 ## ✅ 10. 自我檢核與參考資料
 
 ### 10.1 完成標準
@@ -586,3 +602,4 @@ nf-core 提供社群維護的 pipelines 與 modules；本例是教學程式，�
 [^12]: Nextflow，Migrating to 26.10。https://docs.seqera.io/nextflow/migrations/26-10
 [^13]: nf-core，Pipelines。https://nf-co.re/pipelines
 [^14]: Nextflow，Agents（preview；尤其 caching 與 containerization 章節）。https://docs.seqera.io/nextflow/agent
+[^15]: MultiQC，AI summaries；服務會接收報告資料，並有憑證及人工審核要求。https://docs.seqera.io/multiqc/ai/

@@ -3,11 +3,12 @@
 import argparse
 import csv
 import math
+import re
 from pathlib import Path
 import zipfile
 
 
-def verify(root, samples, cached=False):
+def verify(root, samples, cached=False, ai=False):
     expected = {f'{sample}_R{read}' for sample in samples for read in (1, 2)}
     for name in sorted(expected):
         html = root / 'fastqc' / f'{name}_fastqc.html'
@@ -37,6 +38,11 @@ def verify(root, samples, cached=False):
         assert all(row['status'] == 'CACHED' for row in trace), 'Expected all cached'
     for name in ('execution_report.html', 'execution_timeline.html', 'pipeline_dag.html'):
         assert (root / 'pipeline_info' / name).stat().st_size > 100
+    if ai:
+        report = (root / 'multiqc/multiqc_report.html').read_text()
+        summary = re.search(r'<div id="global_ai_summary_response"[^>]*>(.*?)</div>', report, re.S)
+        assert summary and re.sub(r'<[^>]+>', '', summary[1]).strip(), 'AI summary missing (MultiQC SUCCESS alone is insufficient)'
+        print('PASS: AI summary text is embedded in the report (not a scientific accuracy check)')
     print(f'PASS: {len(samples)} samples, {len(expected)} FASTQ reports, '
           f'{len(trace)} successful tasks; FastQC content and MultiQC verified')
 
@@ -46,5 +52,6 @@ if __name__ == '__main__':
     parser.add_argument('outdir', type=Path)
     parser.add_argument('--samples', nargs='+', required=True)
     parser.add_argument('--cached', action='store_true')
+    parser.add_argument('--ai', action='store_true', help='Require embedded AI summary text in MultiQC 1.30 HTML')
     args = parser.parse_args()
-    verify(args.outdir, args.samples, args.cached)
+    verify(args.outdir, args.samples, args.cached, args.ai)
