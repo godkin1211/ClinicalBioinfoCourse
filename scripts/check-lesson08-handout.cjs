@@ -15,6 +15,8 @@ fs.mkdirSync(output,{recursive:true});
   page.on('request',r=>{if(/^https?:/.test(r.url()))network.push(r.url());});
   await page.goto(pathToFileURL(path.join(root,'output/slides/lesson-08-materials.html')).href);
   await page.evaluate(()=>document.fonts.ready);
+  assert.ok(!(await page.locator('body').innerText()).includes('第八堂'));
+  assert.ok(!(await page.title()).includes('第八堂'));
   assert.equal(await page.locator('main h1').count(),1);
   assert.equal(await page.locator('main h2').count(),10);
   assert.equal(await page.locator('main .workflow-diagram svg').count(),1);

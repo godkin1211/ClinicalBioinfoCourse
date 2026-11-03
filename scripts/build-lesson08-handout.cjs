@@ -85,7 +85,7 @@ print(json.dumps(text))`;
 <noscript><p>請啟用 JavaScript 以載入內嵌報告；講義正文仍可閱讀。</p></noscript>
 </section>`]});
   const compiled = cp.execFileSync('pandoc', ['-f','json','-t','html5','--standalone','--toc','--toc-depth=2',
-    '--metadata','lang:zh-Hant','--metadata','title:第八堂｜Nextflow 生物資訊流程講義',
+    '--metadata','lang:zh-Hant','--metadata','title:Nextflow 生物資訊流程講義',
     '--template',path.join(root,'scripts/lesson08-handout.html')], {input:JSON.stringify(ast),encoding:'utf8',maxBuffer:32*1024*1024});
   const output = compiled.replace('<!--QC_DATA-->', `<script id="qc-data" type="application/octet-stream">${data}</script>`);
   fs.mkdirSync(path.dirname(out), {recursive:true});

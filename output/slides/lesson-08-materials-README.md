@@ -1,4 +1,4 @@
-# 第八堂 HTML 講義：閱讀與重新編譯
+# Nextflow HTML 講義：閱讀與重新編譯
 
 _Nextflow 工作流程入門｜單檔 HTML，含已執行的合成資料 MultiQC 報告_
 
