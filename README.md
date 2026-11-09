@@ -59,7 +59,7 @@
 
 ### Nextflow FASTQ QC
 
-- [Nextflow 課程投影片（PPTX）](output/slides/lesson-08-nextflow.pptx)：依學員講義及使用者提供的 Nextflow 範本製作，含 40 頁課堂內容及 12 頁安裝、指令與選配通知附錄；[製作與使用說明](output/slides/lesson-08-nextflow-README.md)。
+- [Nextflow 課程投影片（PPTX，右上角頁碼版）](output/slides/lesson-08-nextflow-numbered.pptx)：保留目前手動編輯版本的 54 頁內容與附錄，首頁不標頁碼，其餘頁碼位於右上角；[製作與使用說明](output/slides/lesson-08-nextflow-README.md)。
 
 - [離線分享 ZIP](output/packages/nextflow-handout.zip)：解壓後開啟 `Nextflow-handout/index.html`，附完整講義、內嵌 MultiQC／AI 最終摘要及合成實作檔案，不含憑證或執行暫存。可用 `python3 scripts/package-lesson08-handout.py` 重新打包。
 

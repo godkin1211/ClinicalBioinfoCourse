@@ -1,5 +1,15 @@
 # Nextflow 課程投影片
 
+## 目前分享版本
+
+`lesson-08-nextflow-numbered.pptx` 以目前手動編輯的 54 頁 `lesson-08-nextflow.pptx` 另存。首頁不標頁碼，其餘 53 頁將既有頁碼移至右上角，保留原有頁序、內容、母片、圖像及 PowerPoint 原生頁碼欄位，沒有重建講義內容。原先手動編輯檔案不覆寫。
+
+`scripts/number-lesson08-slides.cjs` 只調整頁碼 shape 的位置與文字樣式；逐一比對其他 shape 與 ZIP 成員皆未改變。`lesson-08-nextflow-numbered-build.json` 記錄這次的輸入、輸出雜湊及頁碼設定。重新執行時可傳入來源與新的輸出檔名，既有檔案不會覆寫。
+
+以下記錄最初由講義產生的 52 頁版本，不包含後續手動新增或調整的內容。
+
+## 最初製作版本
+
 - 成品：`lesson-08-nextflow.pptx`，52 頁、16:9，可編輯文字、程式碼與表格。
 - 第 1–40 頁：課堂主體、Summary 與資源連結。
 - 第 41–52 頁：課後安裝、程式導讀、報告開啟與 Gmail 設定附錄。

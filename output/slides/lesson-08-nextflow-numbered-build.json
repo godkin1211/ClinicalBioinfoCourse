@@ -1,0 +1,17 @@
+{
+  "source": "output/slides/lesson-08-nextflow.pptx",
+  "source_sha256": "34775d420bf022e5e2a1c4090c0f59d7078bafb34c958e73296335424d5574cb",
+  "final_sha256": "6c77dbc2739477d00a508f66e06e0284d8aefbc9b42276fbffbe1aa76b393d84",
+  "slide_count": 54,
+  "numbered_slide_count": 53,
+  "page_number": {
+    "position": "top-right",
+    "x_px": 864,
+    "y_px": 14,
+    "width_px": 48,
+    "height_px": 24,
+    "font_size_pt": 12,
+    "cover": false
+  },
+  "preservation": "All non-number shapes and non-slide ZIP members are byte-identical to the current source; original file unchanged."
+}

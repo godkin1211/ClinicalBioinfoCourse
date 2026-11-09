@@ -61,7 +61,8 @@ function header(presentation,slide,record,spec,index){
       sh.text.style={fontSize:18.67,typeface:'Inter Light',color:WHITE,bold:false,insets:0,autoFit:'none'};
     }
   }
-  text(slide,'page-number',String(index+1).padStart(2,'0'),864,505,35,20,13,MUTED);
+  const pageNumber=text(slide,'page-number',String(index+1).padStart(2,'0'),864,14,48,24,16,MUTED);
+  pageNumber.text.alignment='right';
 }
 
 export async function buildBatch({presentation,input}){
