@@ -1,0 +1,329 @@
+{
+  "source": "lessons/lesson-08-materials.md",
+  "source_sha256": "c04711d2f49d17df2d85cdb1412ebb4d4a63e19e51e27f1342deb75a498a02b3",
+  "template_name": "Nextflow Intro 2026.pptx",
+  "template_role": "User-supplied 16:9 theme, master, cover art, mint icons and process diagram",
+  "slide_count": 52,
+  "course_date": "2026-11-10",
+  "language": "zh-Hant",
+  "final_sha256": "fbbdb568cec4ccdca6c199a03c2f7fe3c5bd39fa6f98e15e8b0a9a863518b2ff",
+  "slides": [
+    {
+      "number": 1,
+      "title": "Nextflow 生物資訊工作流程入門",
+      "source_section": "1",
+      "appendix": false
+    },
+    {
+      "number": 2,
+      "title": "一批 RNA-seq 資料的流程管理問題",
+      "source_section": "1",
+      "appendix": false
+    },
+    {
+      "number": 3,
+      "title": "本課的 FASTQ QC 流程",
+      "source_section": "2",
+      "appendix": false
+    },
+    {
+      "number": 4,
+      "title": "Pipeline、Process 與 Task",
+      "source_section": "2",
+      "appendix": false
+    },
+    {
+      "number": 5,
+      "title": "Process、Channel 與 Workflow",
+      "source_section": "2",
+      "appendix": false
+    },
+    {
+      "number": 6,
+      "title": "執行位置與軟體環境",
+      "source_section": "2",
+      "appendix": false
+    },
+    {
+      "number": 7,
+      "title": "work/ 與 results/ 的不同",
+      "source_section": "2.1",
+      "appendix": false
+    },
+    {
+      "number": 8,
+      "title": "安裝與執行路線",
+      "source_section": "3",
+      "appendix": false
+    },
+    {
+      "number": 9,
+      "title": "樣本清單與輸入路徑",
+      "source_section": "4.1",
+      "appendix": false
+    },
+    {
+      "number": 10,
+      "title": "FASTQ 的四行結構",
+      "source_section": "4.2",
+      "appendix": false
+    },
+    {
+      "number": 11,
+      "title": "合成資料與 Phred 品質值",
+      "source_section": "4.2",
+      "appendix": false
+    },
+    {
+      "number": 12,
+      "title": "FastQC process：輸入與輸出",
+      "source_section": "5.1",
+      "appendix": false
+    },
+    {
+      "number": 13,
+      "title": "FastQC process：工具指令與發布",
+      "source_section": "5.1",
+      "appendix": false
+    },
+    {
+      "number": 14,
+      "title": "從 CSV 建立 Channel",
+      "source_section": "5.2",
+      "appendix": false
+    },
+    {
+      "number": 15,
+      "title": "collect() 讓 MultiQC 整批整合",
+      "source_section": "5.3",
+      "appendix": false
+    },
+    {
+      "number": 16,
+      "title": "MultiQC 讀取什麼資料？",
+      "source_section": "5.3",
+      "appendix": false
+    },
+    {
+      "number": 17,
+      "title": "nextflow.config 管理資源與環境",
+      "source_section": "5.4",
+      "appendix": false
+    },
+    {
+      "number": 18,
+      "title": "容器固定了什麼？",
+      "source_section": "3.1、5.4",
+      "appendix": false
+    },
+    {
+      "number": 19,
+      "title": "第一次執行：先用一個樣本",
+      "source_section": "6.1",
+      "appendix": false
+    },
+    {
+      "number": 20,
+      "title": "擴充到兩個樣本並驗證產物",
+      "source_section": "6.2",
+      "appendix": false
+    },
+    {
+      "number": 21,
+      "title": "結果目錄與檔案用途",
+      "source_section": "6.2",
+      "appendix": false
+    },
+    {
+      "number": 22,
+      "title": "MultiQC 報告的閱讀順序",
+      "source_section": "6.4",
+      "appendix": false
+    },
+    {
+      "number": 23,
+      "title": "FastQC 指標與本例的限制",
+      "source_section": "6.4",
+      "appendix": false
+    },
+    {
+      "number": 24,
+      "title": "執行成功與品質合格",
+      "source_section": "6.4、10.2",
+      "appendix": false
+    },
+    {
+      "number": 25,
+      "title": "原樣重跑與 -resume",
+      "source_section": "7.1",
+      "appendix": false
+    },
+    {
+      "number": 26,
+      "title": "新增樣本時，哪些工作會重跑？",
+      "source_section": "7.2",
+      "appendix": false
+    },
+    {
+      "number": 27,
+      "title": "快取命中與失效的判斷",
+      "source_section": "7.3",
+      "appendix": false
+    },
+    {
+      "number": 28,
+      "title": "執行紀錄各自在回答什麼？",
+      "source_section": "7.4",
+      "appendix": false
+    },
+    {
+      "number": 29,
+      "title": "可追溯分析需要保存的證據",
+      "source_section": "7.3、7.4",
+      "appendix": false
+    },
+    {
+      "number": 30,
+      "title": "故障練習：不存在的 FASTQ",
+      "source_section": "8.1",
+      "appendix": false
+    },
+    {
+      "number": 31,
+      "title": "從 task 工作目錄排錯",
+      "source_section": "8.2",
+      "appendix": false
+    },
+    {
+      "number": 32,
+      "title": "常見故障與優先檢查",
+      "source_section": "8.3",
+      "appendix": false
+    },
+    {
+      "number": 33,
+      "title": "Nextflow 26.10 的延伸功能",
+      "source_section": "9.1–9.3",
+      "appendix": false
+    },
+    {
+      "number": 34,
+      "title": "成熟流程與 nf-core",
+      "source_section": "9.3",
+      "appendix": false
+    },
+    {
+      "number": 35,
+      "title": "Nextflow agent 與 MultiQC AI 摘要",
+      "source_section": "9.4、9.5",
+      "appendix": false
+    },
+    {
+      "number": 36,
+      "title": "Nextflow secrets：先登錄具名憑證",
+      "source_section": "9.5.1",
+      "appendix": false
+    },
+    {
+      "number": 37,
+      "title": "現有 Seqera AI 範例仍使用唯讀 token 檔",
+      "source_section": "9.5.3",
+      "appendix": false
+    },
+    {
+      "number": 38,
+      "title": "Gmail 通知的是整個 workflow 結束狀態",
+      "source_section": "9.5.2",
+      "appendix": false
+    },
+    {
+      "number": 39,
+      "title": "Take-home messages",
+      "source_section": "10",
+      "appendix": false
+    },
+    {
+      "number": 40,
+      "title": "教材、實作檔案與官方資源",
+      "source_section": "10.3",
+      "appendix": false
+    },
+    {
+      "number": 41,
+      "title": "附錄：課後安裝與實作參考",
+      "source_section": "3、5、9",
+      "appendix": true
+    },
+    {
+      "number": 42,
+      "title": "Windows：WSL2 Ubuntu 與 Docker",
+      "source_section": "3.2",
+      "appendix": true
+    },
+    {
+      "number": 43,
+      "title": "macOS 與 Linux 的主機準備",
+      "source_section": "3.3、3.4、8.3",
+      "appendix": true
+    },
+    {
+      "number": 44,
+      "title": "安裝固定版 Nextflow",
+      "source_section": "3.5",
+      "appendix": true
+    },
+    {
+      "number": 45,
+      "title": "取得教材與預先下載容器",
+      "source_section": "3.6",
+      "appendix": true
+    },
+    {
+      "number": 46,
+      "title": "完整 CSV 轉換邏輯",
+      "source_section": "5.2",
+      "appendix": true
+    },
+    {
+      "number": 47,
+      "title": "開啟報告與保留版本證據",
+      "source_section": "6.3、7.4",
+      "appendix": true
+    },
+    {
+      "number": 48,
+      "title": "Gmail：應用程式密碼與 secrets",
+      "source_section": "9.5.2",
+      "appendix": true
+    },
+    {
+      "number": 49,
+      "title": "Gmail：SMTP 設定與通知內容",
+      "source_section": "9.5.2",
+      "appendix": true
+    },
+    {
+      "number": 50,
+      "title": "Gmail：成功與失敗都需要測試",
+      "source_section": "9.5.2",
+      "appendix": true
+    },
+    {
+      "number": 51,
+      "title": "Gmail 與替代執行路線的限制",
+      "source_section": "8.3、9.5.2",
+      "appendix": true
+    },
+    {
+      "number": 52,
+      "title": "課後自我檢核",
+      "source_section": "10.1、10.2",
+      "appendix": true
+    }
+  ],
+  "notes": [
+    "Source is the current working copy, including its existing course-date edit.",
+    "No scientific analysis, AI API request or email was executed to create this deck.",
+    "Original user-supplied template is not republished as an unmodified file."
+  ]
+}
